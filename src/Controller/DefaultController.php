@@ -19,4 +19,10 @@ class DefaultController extends AbstractController
     {
         return $this->render('default/context.html.twig');
     }
+
+    #[Route('/regles', name: 'regles')]
+    public function rules() : Response
+    {
+        return $this->render('default/rules.html.twig');
+    }
 }
