@@ -6,14 +6,37 @@
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {% block stylesheets %}
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+            <style>
+                .bg-body {
+                    background: #4E4E4E;
+                }
+                .bg-main {
+                    background: #F1F1F1;
+                }
+            </style>
         {% endblock %}
 
         {% block javascripts %}
+            <!-- JavaScript Bundle with Popper -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
     <body>
-        <div class="container mt-5">
-            {% block body %}{% endblock %}
+    <div class="container-fluid">
+        <div class="row">
+            {% include 'default/_navbar.html.twig' %}
+            <div class="col-sm min-vh-100 bg-body py-3 px-0 px-md-3">
+                <!-- content -->
+                {% include 'default/_auth-buttons.html.twig' %}
+                <div class="container d-flex justify-content-center col-sm-12 px-0 px-sm-2">
+                    <div class="bg-main rounded mt-2 mt-sm-4 w-100">
+                        {% block body %}{% endblock %}
+                    </div>
+
+                </div>
+
+            </div>
         </div>
+    </div>
     </body>
 </html>
