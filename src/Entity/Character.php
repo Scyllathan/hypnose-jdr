@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CharacterRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CharacterRepository::class)]
 #[ORM\Table(name: '`character`')]
@@ -22,6 +23,8 @@ class Character
     private string $firstName;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(12)]
+    #[Assert\LessThanOrEqual(80)]
     private int $age;
 
     #[ORM\Column(length: 255)]
@@ -34,33 +37,50 @@ class Character
     private ?string $powers = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(0)]
     private int $money = 0;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $bag = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\LessThanOrEqual(20)]
     private int $stamina;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\LessThanOrEqual(20)]
     private int $strength;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\LessThanOrEqual(20)]
     private int $agility;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\LessThanOrEqual(20)]
     private int $speed;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\LessThanOrEqual(20)]
     private int $charisma;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\LessThanOrEqual(20)]
     private int $intelligence;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\LessThanOrEqual(20)]
     private int $resilience;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\LessThanOrEqual(20)]
     private int $luck;
 
     #[ORM\ManyToOne(inversedBy: 'characters')]

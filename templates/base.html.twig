@@ -27,6 +27,16 @@
             {% include 'default/_navbar.html.twig' %}
             <div class="col-sm min-vh-100 bg-body py-3 px-0 px-md-3">
                 <!-- content -->
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('alert') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
                 {% include 'default/_auth-buttons.html.twig' %}
                 <div class="container d-flex justify-content-center col-sm-12 px-0 px-sm-2">
                     <div class="bg-main rounded mt-2 mt-sm-4 w-100">
