@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes personnages{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="mb-5">Mes personnages</h1>
+        <table class="table table-striped table-hover table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th class="w-75">Nom</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+            </tr>
+            </thead>
+            <tbody>
+        {% for character in characters %}
+            <tr>
+                <td>{{ character.id }}</td>
+                <td>{{ character.firstName }} {{ character.lastName }}</td>
+                <td>
+                    <a href="{{ path('app_character', { 'id': character.id }) }}" role="button" class="btn
+                    btn-info">Détail</a>
+                </td>
+                <td>
+                    <a href="{{ path('app_modify_character', { 'id': character.id }) }}" role="button" class="btn
+                    btn-warning">Modifier</a>
+                </td>
+                <td>
+                    <a href="{{ path('app_del_character', { 'id': character.id }) }}" role="button" class="btn btn-danger" onclick="return confirm('Êtes vous sûr de ' +
+                     'vouloir supprimer ce personnage ?');">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

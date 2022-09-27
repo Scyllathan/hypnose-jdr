@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification de {{ character.firstName | capitalize }} {{ character.lastName | upper }}{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1>Modification de {{ character.firstName | capitalize }} {{ character.lastName | upper }}</h1>
+
+        {{ form_start(characterForm) }}
+        {{ form_row(characterForm.firstName, { label: 'Prénom' }) }}
+        {{ form_row(characterForm.lastName, { label: 'Nom de famille' }) }}
+        {{ form_row(characterForm.age, { label: 'Age' }) }}
+        {{ form_row(characterForm.disease, { label: 'Maladie mentale' }) }}
+        {{ form_row(characterForm.story, { label: 'Histoire' }) }}
+        {{ form_row(characterForm.powers, { label: 'Pouvoirs' }) }}
+        {{ form_row(characterForm.money, { label: 'Bourse' }) }}
+        {{ form_row(characterForm.bag, { label: 'Sac-à-dos' }) }}
+        {{ form_row(characterForm.stamina, { label: 'Endurance' }) }}
+        {{ form_row(characterForm.strength, { label: 'Force' }) }}
+        {{ form_row(characterForm.agility, { label: 'Agilité' }) }}
+        {{ form_row(characterForm.speed, { label: 'Rapidité' }) }}
+        {{ form_row(characterForm.intelligence, { label: 'Intelligence' }) }}
+        {{ form_row(characterForm.resilience, { label: 'Resilience' }) }}
+        {{ form_row(characterForm.charisma, { label: 'Charisme' }) }}
+        {{ form_row(characterForm.luck, { label: 'Chance' }) }}
+        <button type="submit" class="btn btn-info btn-lg">Appliquer les modifications</button>
+        {{ form_end(characterForm) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ character.firstName | capitalize }} {{ character.lastName | upper }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .white-box {
+            background: white;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <a href="{{ path('app_character_list') }}" role="button" class="btn btn-info"><< Retour à la liste des personnages</a>
+        <h1 class="mb-5 text-center">{{ character.firstName | capitalize }} {{ character.lastName | upper
+            }}</h1>
+
+        <p class="my-4"><b>Age</b> : {{ character.age }}</p>
+        <p class="my-4"><b>Maladie Mentale</b> : {{ character.disease | capitalize }}</p>
+        <p class="my-4"><b>Histoire</b> :</p>
+        <div class="container white-box rounded mx-0 my-2 p-2">
+            {% if character.story is null %}
+                Inconnue pour le moment...
+            {% endif %}
+            <p> {{ character.story }}</p>
+        </div>
+        <p class="my-4"><b>Pouvoirs</b> :</p>
+        <div class="container white-box rounded mx-0 my-2 p-2">
+            {% if character.powers is null %}
+                Inconnus pour le moment...
+            {% endif %}
+            <p> {{ character.powers }}</p>
+        </div>
+        <p class="my-4"><b>Bourse</b> : {{ character.money }} rubz</p>
+        <p class="my-4"><b>Sac-à-dos</b> :</p>
+        <div class="container white-box rounded mx-0 my-2 p-2">
+            {% if character.bag is null %}
+                Vide pour le moment...
+            {% endif %}
+            <p> {{ character.bag }}</p>
+        </div>
+        <p class="mt-4"><b>Caractéristiques</b> :</p>
+        <table class="table table-striped table-hover table-responsive-sm text-center">
+            <thead>
+            <tr>
+                <th>Corps</th>
+                <th>Esprit</th>
+                <th>Endurance</th>
+                <th>Force</th>
+                <th>Agilité</th>
+                <th>Rapidité</th>
+                <th>Intelligence</th>
+                <th>Résilience</th>
+                <th>Charisme</th>
+                <th>Chance</th>
+            </tr>
+            </thead>
+            <tbody>
+            <td>{{ character.stamina + character.strength + character.agility + character.speed }}</td>
+            <td>{{ character.intelligence + character.resilience + character.charisma + character.luck }}</td>
+            <td>{{ character.stamina }}</td>
+            <td>{{ character.strength }}</td>
+            <td>{{ character.agility }}</td>
+            <td>{{ character.speed }}</td>
+            <td>{{ character.intelligence }}</td>
+            <td>{{ character.resilience }}</td>
+            <td>{{ character.charisma }}</td>
+            <td>{{ character.luck }}</td>
+            </tbody>
+
+    </div>
+{% endblock %}
