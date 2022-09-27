@@ -40,9 +40,11 @@
                 </p>
             {% if character.user.id == app.user.id %}
                 <a href="#" role="button" class="btn btn-info">Voir ses aventures</a>
-            {% endif %}
-            {% if character.game is not null %}
-                <a href="{{ path('app_quit_game', { 'id': character.id }) }}" role="button" class="btn btn-danger">Quitter la partie</a>
+                {% if character.game is not null %}
+                    <a href="{{ path('app_quit_game', { 'id': character.id }) }}" role="button" class="btn btn-danger"
+                   onclick="return confirm('Êtes vous sûr de vouloir quitter cette partie ?');"
+                >Quitter la partie</a>
+                {% endif %}
             {% endif %}
         </div>
 

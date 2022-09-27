@@ -31,11 +31,11 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="#" role="button" class="btn
+                        <a href="{{ path('app_game', { 'id': game.id }) }}" role="button" class="btn
                     btn-info">Détail</a>
                     </td>
                     <td>
-                        <a href="#" role="button" class="btn
+                        <a href="{{ path('app_modify_game', { 'id': game.id }) }}" role="button" class="btn
                     btn-warning">Modifier</a>
                     </td>
                     <td>

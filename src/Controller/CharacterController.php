@@ -115,13 +115,13 @@ class CharacterController extends AbstractController
     #[Route('/joueur/modifier-personnage/{id}', name:'app_modify_character')]
     public function modifyCharacter(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $entityManager = $this->doctrine->getManager();
         $repository = $entityManager->getRepository(Character::class);
         $character = $repository->find($id);
         $userId = $this->getUser()->getId();
-        $characters = $repository->findBy(array('user' => $userId));
         $form = $this->createForm(CharacterType::class, $character);
         $form->handleRequest($request);
+
+        $characters = $repository->findBy(array('user' => $userId));
 
         if ($character && $character->getUser()->getId() === $userId) {
             if ($form->isSubmitted() && $form->isValid()) {

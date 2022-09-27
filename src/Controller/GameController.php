@@ -91,4 +91,84 @@ class GameController extends AbstractController
 
         return $this->redirectToRoute('app_game_list');
     }
+
+    #[Route('/mj/modifier-partie/{id}', name: 'app_modify_game')]
+    public function modifyGame(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $repository = $entityManager->getRepository(Game::class);
+        $game = $repository->find($id);
+        $userId = $this->getUser()->getId();
+        $form = $this->createForm(GameType::class, $game);
+        $form->handleRequest($request);
+
+        $games = $repository->findBy(array('user' => $userId));
+
+        if ($game && $game->getUser()->getId() === $userId) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->addFlash('success', 'Partie modifié !');
+
+                foreach($game->getCharacters() as $player) {
+                    $game->removeCharacter($player);
+                }
+
+                $entityManager->persist($game);
+                $entityManager->flush();
+
+                $characters = [];
+
+                $characters[] = $form->get("character1")->getData();
+                $characters[] = $form->get("character2")->getData();
+                $characters[] = $form->get("character3")->getData();
+                $characters[] = $form->get("character4")->getData();
+                $characters[] = $form->get("character5")->getData();
+
+                $repository = $entityManager->getRepository(Character::class);
+
+                $count = count($characters);
+
+                for ($i = 0 ; $i < $count ; $i++) {
+                    if ($characters[$i] !== null) {
+                        $characters[$i] = $repository->findBy(array('id' => $characters[$i]));
+                        if ($characters[$i][0]->getGame() === null) {
+                            $game->addCharacter($characters[$i][0]);
+                        } else {
+                            $this->addFlash('alert', sprintf('%s %s n\'a pas été ajouté, il est déjà lié à une autre partie !', $characters[$i]->getFirstName(), $characters[$i]->getLastName()));
+                        }
+                    }
+                }
+
+                    $entityManager->persist($game);
+                    $entityManager->flush();;
+
+                    return $this->render('game/game-list.html.twig', [ 'games' => $games ]);
+                }
+            } else if ($game && $game->getUser()->getId() !== $userId) {
+            $this->addFlash('alert', 'On ne peut pas modifier les personnages des autres !');
+            return $this->render('game/game-list.html.twig', [ 'games' => $games ]);
+        } else {
+            $this->addFlash('alert', 'Ce personnage n\'existe pas');
+            return $this->render('game/game-list.html.twig', [ 'games' => $games ]);
+        }
+
+        return $this->render('game/modify-game.html.twig', [
+            'gameForm' => $form->createView(),]);
+    }
+
+    #[Route('mj/voir-partie/{id}', name: 'app_game')]
+    public function gameDetail(int $id): Response
+    {
+        $entityManager = $this->doctrine->getManager();
+        $repository = $entityManager->getRepository(Game::class);
+        $game = $repository->find($id);
+        $userId = $this->getUser()->getId();
+
+        if ($game  && $game->getUser()->getId() === $userId) {
+            return $this->render('game/game-detail.html.twig', ['game' => $game]);
+        } else if ($game && $game->getUser()->getId() !== $userId) {
+            $this->addFlash('alert', 'On ne peut pas voir les parties des autres !');
+        } else {
+            $this->addFlash('alert', 'Cette partie n\'existe pas');
+        }
+        return $this->redirectToRoute('app_game_list');
+    }
 }

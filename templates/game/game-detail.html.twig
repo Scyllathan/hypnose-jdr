@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ game.name }}{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="mb-3">{{ game.name }}</h1>
+        <p><b>Personnages participants</b> :</p>
+        <ul>
+            {% for character in game.characters %}
+                <li>
+                    {% if character.isIsPublic or character.user.id == app.user.id %}
+                    <a href="{{ path('app_character', { 'id': character.id }) }}">
+                        {{ character.firstName }} {{ character.lastName }}
+                    </a>
+                    {% else %}
+                        {{ character.firstName }} {{ character.lastName }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
