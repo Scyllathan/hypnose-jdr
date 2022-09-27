@@ -9,7 +9,8 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th class="w-75">Nom</th>
+                    <th class="w-25">Nom</th>
+                    <th class="w-50">Partie</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -20,6 +21,13 @@
             <tr>
                 <td>{{ character.id }}</td>
                 <td>{{ character.firstName }} {{ character.lastName }}</td>
+                <td>
+                    {% if character.game is null %}
+                        Aucune
+                    {% else %}
+                        {{ character.game.name }}
+                    {% endif %}
+                </td>
                 <td>
                     <a href="{{ path('app_character', { 'id': character.id }) }}" role="button" class="btn
                     btn-info">Détail</a>

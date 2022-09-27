@@ -16,6 +16,36 @@
         <a href="{{ path('app_character_list') }}" role="button" class="btn btn-info"><< Retour à la liste des personnages</a>
         <h1 class="mb-5 text-center">{{ character.firstName | capitalize }} {{ character.lastName | upper
             }}</h1>
+        <div class="container rounded mx-0 my-5 p-0">
+            {% if character.user.id == app.user.id %}
+            <p><b>Identifiant n° {{ character.id }}</b>
+                {% if character.game is null %}
+                (à donner à votre MJ pour être ajouté à une partie)
+                {% endif %}
+            </p>
+            {% endif %}
+            <p><b>Personnage public :</b>
+                {% if character.isPublic %}
+                    Oui
+                {% else %}
+                    Non
+                {% endif %}
+            </p>
+            <p><b>Partie</b> :
+                {% if character.game is null %}
+                    Aucune pour le moment...
+                {% else %}
+                    {{ character.game.name }}
+                {% endif %}
+                </p>
+            {% if character.user.id == app.user.id %}
+                <a href="#" role="button" class="btn btn-info">Voir ses aventures</a>
+            {% endif %}
+            {% if character.game is not null %}
+                <a href="{{ path('app_quit_game', { 'id': character.id }) }}" role="button" class="btn btn-danger">Quitter la partie</a>
+            {% endif %}
+        </div>
+
 
         <p class="my-4"><b>Age</b> : {{ character.age }}</p>
         <p class="my-4"><b>Maladie Mentale</b> : {{ character.disease | capitalize }}</p>

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle partie{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1>Création de partie</h1>
+    {{ form_start(gameForm) }}
+    {{ form_row(gameForm.name, { label: 'Nom de la partie' }) }}
+    {{ form_row(gameForm.character1, { label: 'Id du personnage 1'}) }}
+    {{ form_row(gameForm.character2, { label: 'Id du personnage 2'}) }}
+    {{ form_row(gameForm.character3, { label: 'Id du personnage 3'}) }}
+    {{ form_row(gameForm.character4, { label: 'Id du personnage 4'}) }}
+    {{ form_row(gameForm.character5, { label: 'Id du personnage 5'}) }}
+    <button type="submit" class="btn btn-info btn-lg">Créer la partie</button>
+    {{ form_end(gameForm) }}
+</div>
+{% endblock %}

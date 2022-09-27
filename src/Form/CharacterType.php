@@ -3,8 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Character;
+use Doctrine\DBAL\Types\BooleanType;
+use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Nullable;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -32,6 +35,7 @@ class CharacterType extends AbstractType
             ->add('intelligence', NumberType::class)
             ->add('resilience', NumberType::class)
             ->add('luck', NumberType::class)
+            ->add('isPublic', CheckboxType::class)
         ;
     }
 

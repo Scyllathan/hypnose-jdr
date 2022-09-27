@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Personnages publics{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="mb-5">Personnages publics</h1>
+        <table class="table table-striped table-hover table-responsive-sm">
+            <thead>
+            <tr>
+                <th class="w-50">Nom</th>
+                <th class="w-50">Partie</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for character in characters %}
+                <tr>
+                    <td>{{ character.firstName }} {{ character.lastName }}</td>
+                    <td>
+                        {% if character.game is null %}
+                            Aucune
+                        {% else %}
+                            {{ character.game.name }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_character', { 'id': character.id }) }}" role="button" class="btn
+                    btn-info">Détail</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

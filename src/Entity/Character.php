@@ -90,6 +90,9 @@ class Character
     #[ORM\ManyToOne(inversedBy: 'characters')]
     private ?Game $game = null;
 
+    #[ORM\Column]
+    private bool $isPublic = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -307,6 +310,18 @@ class Character
     public function setGame(?Game $game): self
     {
         $this->game = $game;
+
+        return $this;
+    }
+
+    public function isIsPublic(): bool
+    {
+        return $this->isPublic;
+    }
+
+    public function setIsPublic(bool $isPublic): self
+    {
+        $this->isPublic = $isPublic;
 
         return $this;
     }

@@ -36,8 +36,8 @@ security:
         ROLE_ADMIN: ROLE_MJ
 
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/mj, roles: ROLE_MJ }
+        - { path: ^/joueur, roles: ROLE_USER }
 
 when@test:
     security:
