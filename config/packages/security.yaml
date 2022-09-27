@@ -39,6 +39,8 @@ security:
         - { path: ^/mj, roles: ROLE_MJ }
         - { path: ^/joueur, roles: ROLE_USER }
 
+    access_denied_url: /
+
 when@test:
     security:
         password_hashers:

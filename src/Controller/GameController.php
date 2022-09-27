@@ -60,7 +60,7 @@ class GameController extends AbstractController
             'gameForm' => $form->createView(),]);
     }
 
-    #[Route('/mj/mes-parties', name: 'app_game-list')]
+    #[Route('/mj/mes-parties', name: 'app_game_list')]
     public function showGames(): Response
     {
         $entityManager = $this->doctrine->getManager();
@@ -70,5 +70,25 @@ class GameController extends AbstractController
         $games = $repository->findBy(array('user' => $userId));
 
         return $this->render('game/game-list.html.twig', [ 'games' => $games ]);
+    }
+
+    #[Route('/mj/supprimer-partie/{id}', name: 'app_delete_game')]
+    public function deleteGame(int $id): Response
+    {
+        $entityManager = $this->doctrine->getManager();
+        $repository = $entityManager->getRepository(Game::class);
+        $game = $repository->find($id);
+        $userId = $this->getUser()->getId();
+
+        if ($game && $game->getUser()->getId() === $userId) {
+            $repository->remove($game, true);
+            $this->addFlash('success', sprintf('La partie "%s" a bien été supprimée !', $game->getName()));
+        } else if ($game && $game->getUser()->getId() !== $userId) {
+            $this->addFlash('alert', 'On ne peut pas supprimer les parties des autres !');
+        } else {
+            $this->addFlash('alert', 'Cette partie n\'existe pas');
+        }
+
+        return $this->redirectToRoute('app_game_list');
     }
 }

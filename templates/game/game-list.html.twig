@@ -39,9 +39,8 @@
                     btn-warning">Modifier</a>
                     </td>
                     <td>
-                        <a href="#" role="button" class="btn
-                        btn-danger" onclick="return confirm('Êtes vous sûr de ' +
-                     'vouloir supprimer cette partie ?');">Supprimer</a>
+                        <a href="{{ path('app_delete_game', { 'id': game.id }) }}" role="button" class="btn
+                        btn-danger" onclick="return confirm('Êtes vous sûr de vouloir supprimer cette partie ?');">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}
