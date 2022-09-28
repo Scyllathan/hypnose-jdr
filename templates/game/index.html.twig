@@ -7,11 +7,12 @@
     <h1>Création de partie</h1>
     {{ form_start(gameForm) }}
     {{ form_row(gameForm.name, { label: 'Nom de la partie' }) }}
-    {{ form_row(gameForm.character1, { label: 'Id du personnage 1'}) }}
-    {{ form_row(gameForm.character2, { label: 'Id du personnage 2'}) }}
-    {{ form_row(gameForm.character3, { label: 'Id du personnage 3'}) }}
-    {{ form_row(gameForm.character4, { label: 'Id du personnage 4'}) }}
-    {{ form_row(gameForm.character5, { label: 'Id du personnage 5'}) }}
+    <p><i>Vous pouvez entrer de 0 à 5 personnages participants (modifiable ultérieurement)</i></p>
+    {{ form_row(gameForm.character1, { label: 'Id du 1er personnage'}) }}
+    {{ form_row(gameForm.character2, { label: 'Id du 2eme personnage'}) }}
+    {{ form_row(gameForm.character3, { label: 'Id du 3eme personnage'}) }}
+    {{ form_row(gameForm.character4, { label: 'Id du 4eme personnage'}) }}
+    {{ form_row(gameForm.character5, { label: 'Id du 5eme personnage'}) }}
     <button type="submit" class="btn btn-info btn-lg">Créer la partie</button>
     {{ form_end(gameForm) }}
 </div>

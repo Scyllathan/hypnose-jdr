@@ -10,7 +10,7 @@
             {% for character in game.characters %}
                 <li>
                     {% if character.isIsPublic or character.user.id == app.user.id %}
-                    <a href="{{ path('app_character', { 'id': character.id }) }}">
+                    <a href="{{ path('app_character', { 'id': character.id }) }}" class="text-info">
                         {{ character.firstName }} {{ character.lastName }}
                     </a>
                     {% else %}
@@ -19,5 +19,43 @@
                 </li>
             {% endfor %}
         </ul>
+        <h2>Nos résumés de séance</h2>
+        {% if game.user == app.user %}
+            <a href="{{ path('app_new_summary', { 'id': game.id }) }}" class="btn btn-info" role="button">Ecrire un résumé de séance</a>
+        {% endif %}
+        <table class="table table-striped table-hover table-responsive-sm">
+            <thead>
+            <tr>
+                <th class="w-75">Titre</th>
+                <th>Date</th>
+                <th></th>
+                {% if game.user == app.user %}
+                    <th></th>
+                    <th></th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for summary in summaries %}
+                <tr>
+                    <td>{{ summary.title }}</td>
+                    <td>{{ summary.sessionDate|date("d/m/Y") }}</td>
+                    <td>
+                        <a href="{{ path('app_summary_detail', { 'id': summary.id }) }}" role="button" class="btn
+                        btn-info">Détail</a>
+                    </td>
+                    {% if game.user == app.user %}
+                        <td>
+                            <a href="{{ path('app_modify_summary', { 'id': summary.id }) }}" role="button" class="btn
+                            btn-warning">Modifier</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('app_delete_summary', { 'id': summary.id}) }}" role="button" class="btn
+                            btn-danger" onclick="return confirm('Êtes vous sûr de vouloir supprimer ce résumé ?');">Supprimer</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
     </div>
 {% endblock %}

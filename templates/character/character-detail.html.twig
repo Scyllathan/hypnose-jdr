@@ -16,7 +16,7 @@
         <a href="{{ path('app_character_list') }}" role="button" class="btn btn-info"><< Retour à la liste des personnages</a>
         <h1 class="mb-5 text-center">{{ character.firstName | capitalize }} {{ character.lastName | upper
             }}</h1>
-        <div class="container rounded mx-0 my-5 p-0">
+        <div class="container mx-0 my-5 p-0">
             {% if character.user.id == app.user.id %}
             <p><b>Identifiant n° {{ character.id }}</b>
                 {% if character.game is null %}
@@ -38,13 +38,12 @@
                     {{ character.game.name }}
                 {% endif %}
                 </p>
-            {% if character.user.id == app.user.id %}
-                <a href="#" role="button" class="btn btn-info">Voir ses aventures</a>
-                {% if character.game is not null %}
-                    <a href="{{ path('app_quit_game', { 'id': character.id }) }}" role="button" class="btn btn-danger"
+            {% if character.user.id == app.user.id and character.game is not null %}
+                <a href="{{ path('app_game', { 'id': character.game.id }) }}" role="button" class="btn btn-info">Voir
+                    ses aventures</a>
+                <a href="{{ path('app_quit_game', { 'id': character.id }) }}" role="button" class="btn btn-danger"
                    onclick="return confirm('Êtes vous sûr de vouloir quitter cette partie ?');"
                 >Quitter la partie</a>
-                {% endif %}
             {% endif %}
         </div>
 

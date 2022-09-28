@@ -23,10 +23,25 @@ class CharacterType extends AbstractType
             ->add('firstName', TextType::class)
             ->add('age', NumberType::class)
             ->add('disease', TextType::class)
-            ->add('story')
-            ->add('powers')
+            ->add('story', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'rows' => '10',
+                ],
+            ])
+            ->add('powers', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'rows' => '10',
+                ],
+            ])
             ->add('money', NumberType::class)
-            ->add('bag')
+            ->add('bag', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'rows' => '10',
+                ],
+            ])
             ->add('stamina', NumberType::class)
             ->add('strength', NumberType::class)
             ->add('agility', NumberType::class)
@@ -35,7 +50,9 @@ class CharacterType extends AbstractType
             ->add('intelligence', NumberType::class)
             ->add('resilience', NumberType::class)
             ->add('luck', NumberType::class)
-            ->add('isPublic', CheckboxType::class)
+            ->add('isPublic', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
     }
 

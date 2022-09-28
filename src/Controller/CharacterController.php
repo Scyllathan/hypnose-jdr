@@ -117,10 +117,10 @@ class CharacterController extends AbstractController
     {
         $repository = $entityManager->getRepository(Character::class);
         $character = $repository->find($id);
-        $userId = $this->getUser()->getId();
         $form = $this->createForm(CharacterType::class, $character);
         $form->handleRequest($request);
 
+        $userId = $this->getUser()->getId();
         $characters = $repository->findBy(array('user' => $userId));
 
         if ($character && $character->getUser()->getId() === $userId) {

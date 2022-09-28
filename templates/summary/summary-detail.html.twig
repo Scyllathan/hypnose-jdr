@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .white-box {
+            background: white;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}{{ summary.title }}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <a href="{{ path('app_game', { 'id': summary.game.id}) }}" role="button" class="btn btn-info"><< Retour à la
+        partie</a>
+    <h1 class="my-3">{{ summary.title }}</h1>
+    <p>{{ summary.sessionDate|date("d/m/Y") }}</p>
+    <div class="container white-box rounded mx-0 my-2 p-2">
+        <p>
+            {{ summary.content }}
+        </p>
+    </div>
+</div>
+{% endblock %}

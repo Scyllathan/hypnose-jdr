@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Character;
 use App\Entity\Game;
+use App\Entity\Summary;
 use App\Form\GameType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -154,21 +155,30 @@ class GameController extends AbstractController
             'gameForm' => $form->createView(),]);
     }
 
-    #[Route('mj/voir-partie/{id}', name: 'app_game')]
+    #[Route('joueur/voir-partie/{id}', name: 'app_game')]
     public function gameDetail(int $id): Response
     {
         $entityManager = $this->doctrine->getManager();
         $repository = $entityManager->getRepository(Game::class);
         $game = $repository->find($id);
+        $repository = $entityManager->getRepository(Summary::class);
+        $summaries = $repository->findBy(array('game' => $id));
         $userId = $this->getUser()->getId();
 
-        if ($game  && $game->getUser()->getId() === $userId) {
-            return $this->render('game/game-detail.html.twig', ['game' => $game]);
+        $repository = $entityManager->getRepository(Character::class);
+        $characters = $repository->findBy(array('user' => $userId));
+        $charactersGamesIds = [];
+        foreach ($characters as $character) {
+            $charactersGamesIds[] = $character->getGame()->getId();
+        }
+
+        if ($game  && ($game->getUser()->getId() === $userId || in_array($id, $charactersGamesIds))) {
+            return $this->render('game/game-detail.html.twig', ['game' => $game, 'summaries' => $summaries ]);
         } else if ($game && $game->getUser()->getId() !== $userId) {
             $this->addFlash('alert', 'On ne peut pas voir les parties des autres !');
         } else {
             $this->addFlash('alert', 'Cette partie n\'existe pas');
         }
-        return $this->redirectToRoute('app_game_list');
+        return $this->redirectToRoute('index');
     }
 }

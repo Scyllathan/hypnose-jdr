@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification de "{{ summary.title|capitalize }}"{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1>Modification de "{{ summary.title|capitalize }}"</h1>
+
+        {{ form_start(summaryForm) }}
+
+        {{ form_row(summaryForm.title, {label: 'Titre'}) }}
+        {{ form_row(summaryForm.sessionDate, { label: 'Date de la séance'}) }}
+        {{ form_row(summaryForm.content, { label: 'Résumé'}) }}
+        <button type="submit" class="btn btn-info btn-lg">Appliquer les modifications</button>
+        {{ form_end(summaryForm) }}
+    </div>
+{% endblock %}

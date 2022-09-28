@@ -27,12 +27,12 @@ class Summary
     #[ORM\JoinColumn(nullable: false)]
     private Game $game;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -44,7 +44,7 @@ class Summary
         return $this;
     }
 
-    public function getSessionDate(): ?\DateTimeInterface
+    public function getSessionDate(): \DateTimeInterface
     {
         return $this->sessionDate;
     }
@@ -56,7 +56,7 @@ class Summary
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -68,12 +68,12 @@ class Summary
         return $this;
     }
 
-    public function getGame(): ?Game
+    public function getGame(): Game
     {
         return $this->game;
     }
 
-    public function setGame(?Game $game): self
+    public function setGame(Game $game): self
     {
         $this->game = $game;
 
