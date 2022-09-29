@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mes données{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1>Modifier mes données</h1>
+        {{ form_start(userForm) }}
+        {{ form_row(userForm.email) }}
+        {{ form_row(userForm.username, { label: 'Pseudo'}) }}
+        {{ form_row(userForm.plainPassword, { label: 'Nouveau mot de passe'}) }}
+        {{ form_row(userForm.confirmPlainPassword, { label: 'Confirmer votre nouveau mot de passe'}) }}
+        {{ form_row(userForm.isGameMaster, { label: 'Maitre du jeu'}) }}
+        <button type="submit" class="btn btn-info btn-lg">Modifier mes données</button>
+        {{ form_end(userForm) }}
+    </div>
+{% endblock %}

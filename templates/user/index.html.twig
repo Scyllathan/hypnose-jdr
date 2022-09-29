@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="mb-5 text-center">Mon compte</h1>
+        <p>Email : {{ app.user.email }}</p>
+        <p>Pseudo : {{ app.user.username }}</p>
+        <p>Maitre du Jeu :
+        {% if app.user.isGameMaster %}
+            Oui
+        {% else %}
+            Non
+        {% endif %}
+        </p>
+        <p></p>
+        <a href="{{ path('app_modify_user') }}" role="button" class="btn btn-warning my-2 mr-2">Modifier mes
+            données</a>
+        <a href="{{ path('app_delete_user') }}" role="button" class="btn btn-danger my-2" onclick="return confirm
+        ('Êtes ' +
+         'vous sûr de vouloir supprimer votre compte ?');">Supprimer mon compte</a>
+    </div>
+{% endblock %}
