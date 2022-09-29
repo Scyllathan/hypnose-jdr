@@ -37,7 +37,6 @@ class GameController extends AbstractController
             $characters[] = $form->get("character4")->getData();
             $characters[] = $form->get("character5")->getData();
 
-            $entityManager = $this->doctrine->getManager();
             $repository = $entityManager->getRepository(Character::class);
 
             foreach ($characters as $character) {

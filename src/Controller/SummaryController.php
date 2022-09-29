@@ -81,9 +81,11 @@ class SummaryController extends AbstractController
     #[Route('/mj/modifier-resume/{id}', name: 'app_modify_summary')]
     public function modifySummary(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Création du formulaire
+        // Récupération de l'entité Summary associée à l'id en GET
         $repository = $entityManager->getRepository(Summary::class);
         $summary = $repository->find($id);
+
+        // Création du formulaire
         $form = $this->createForm(SummaryType::class, $summary);
         $form->handleRequest($request);
 
@@ -113,12 +115,16 @@ class SummaryController extends AbstractController
     #[Route('/mj/supprimer-resume/{id}', name: 'app_delete_summary')]
     public function deleteSummary(int $id): Response
     {
+        // Récupération de l'entité Summary associée à l'id en GET
         $entityManager = $this->doctrine->getManager();
         $repository = $entityManager->getRepository(Summary::class);
         $summary = $repository->find($id);
 
+        // Vérifications d'accès et redirection + flash message
         if ($summary && $summary->getGame()->getUser()->getId() === $this->getUser()->getId()) {
+            // Suppression du tuple en BDD
             $repository->remove($summary, true);
+
             $this->addFlash('success', sprintf('"%s" a bien été supprimé !', $summary->getTitle()));
             return $this->redirectToRoute('app_game', ['id' => $summary->getGame()->getId()]);
         } else if ($summary && $summary->getGame()->getUser()->getId() !== $this->getUser()->getId()) {

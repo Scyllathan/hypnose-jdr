@@ -1,11 +1,19 @@
-// assets/styles/global.scss
-
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
 
+.white-box {
+  background: white;
+}
+.font-boot {
+  font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+}
 .bg-body {
   background: #4E4E4E;
 }
 .bg-main {
   background: #F1F1F1;
+}
+.nd-list {
+  list-style-type: circle;
 }

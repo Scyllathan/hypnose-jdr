@@ -2,15 +2,6 @@
 
 {% block title %}{{ character.firstName | capitalize }} {{ character.lastName | upper }}{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        .white-box {
-            background: white;
-        }
-    </style>
-{% endblock %}
-
 {% block body %}
     <div class="container my-5">
         <a href="{{ path('app_character_list') }}" role="button" class="btn btn-info"><< Retour à la liste des personnages</a>
@@ -51,26 +42,26 @@
         <p class="my-4"><b>Age</b> : {{ character.age }}</p>
         <p class="my-4"><b>Maladie Mentale</b> : {{ character.disease | capitalize }}</p>
         <p class="my-4"><b>Histoire</b> :</p>
-        <div class="container white-box rounded mx-0 my-2 p-2">
+        <div class="container bg-light rounded mx-0 my-2 p-2">
             {% if character.story is null %}
                 Inconnue pour le moment...
             {% endif %}
-            <p> {{ character.story }}</p>
+            <p><pre class="font-boot">{{ character.story }}</pre></p>
         </div>
         <p class="my-4"><b>Pouvoirs</b> :</p>
-        <div class="container white-box rounded mx-0 my-2 p-2">
+        <div class="container bg-light rounded mx-0 my-2 p-2">
             {% if character.powers is null %}
                 Inconnus pour le moment...
             {% endif %}
-            <p> {{ character.powers }}</p>
+            <p><pre class="font-boot">{{ character.powers }}</pre></p>
         </div>
         <p class="my-4"><b>Bourse</b> : {{ character.money }} rubz</p>
         <p class="my-4"><b>Sac-à-dos</b> :</p>
-        <div class="container white-box rounded mx-0 my-2 p-2">
+        <div class="container bg-light rounded mx-0 my-2 p-2">
             {% if character.bag is null %}
                 Vide pour le moment...
             {% endif %}
-            <p> {{ character.bag }}</p>
+            <p><pre class="font-boot">{{ character.bag }}</pre></p>
         </div>
         <p class="mt-4"><b>Caractéristiques</b> :</p>
         <table class="table table-striped table-hover table-responsive-sm text-center">

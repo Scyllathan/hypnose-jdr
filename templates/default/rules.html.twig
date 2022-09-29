@@ -1,17 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        .white-box {
-            background: white;
-        }
-        .nd-list {
-            list-style-type: circle;
-        }
-    </style>
-{% endblock %}
-
 {% block title %}Règles{% endblock %}
 
 {% block body %}
@@ -19,7 +7,7 @@
     <div class="container d-flex align-items-center flex-column">
         <h1 class="my-3">Règles du JDR</h1>
 
-        <div class="container m-4 white-box rounded p-lg-2 px-0">
+        <div class="container m-4 bg-light rounded p-lg-2 px-0">
             <h2>Sommaire</h2>
             <ul>
                 <li><a href="#carac" class="text-info"><b>Caractéristiques</b></a>
@@ -114,7 +102,7 @@
                 <li>Une déclaration brève (si trop longue, le tour d’action est perdu)</li>
                 <li>Une action :</li>
             </ul>
-            <div class="container mx-0 m-lg-4 white-box rounded p-lg-2">
+            <div class="container mx-0 m-lg-4 bg-light rounded p-lg-2">
                 <p>Si le personnage choisit de parer ou d’esquiver un attaque lors du tour d’un ennemi, il sautera son tour d’action. Ce dernier sera perdu même si l’esquive/parade a échoué. S’il choisit de le faire pendant son tour, il bloquera/esquivera une attaque si elle a lieu au prochain tour et bénéficiera normalement de son action au tour suivant.
                 </p>
                 <p><u>Attaque physique</u> : jet de force ou de dextérité (selon le type d’arme), facilité par les

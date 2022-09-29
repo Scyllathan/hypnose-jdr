@@ -1,0 +1,19 @@
+{% apply inky_to_html|inline_css(source('@css/foundation-emails.scss')) %}
+    <container>
+        <row>
+            <colums>
+                <p><b>Message envoyé par : {{ from }}</b></p>
+            </colums>
+        </row>
+        <spacer size="16"></spacer>
+        <row>
+            <colums>
+                <p><b>Message :</b></p>
+                <p>
+                    {{ message }}
+                </p>
+            </colums>
+        </row>
+
+    </container>
+{% endapply %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire de contact{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="mb-3">Formulaire de contact</h1>
+
+        <p>Si vous avez des questions sur Hypnose-le jdr et que vous désirez de plus amples informations ou si vous
+            avez rencontré des problèmes lors de votre navigation sur le site, n'hésitez pas à nous contacter.</p>
+
+        {{ form_start(contactForm) }}
+        {{ form_row(contactForm.subject, { label: 'Sujet' }) }}
+        {{ form_row(contactForm.email, { label: 'Email' }) }}
+        {{ form_row(contactForm.content, { label: 'Message' }) }}
+        <button type="submit" class="btn btn-info btn-lg">Envoyer le message</button>
+        {{ form_end(contactForm) }}
+    </div>
+{% endblock %}
