@@ -23,9 +23,15 @@
     {{ form_row(characterForm.resilience, { label: 'Resilience' }) }}
     {{ form_row(characterForm.charisma, { label: 'Charisme' }) }}
     {{ form_row(characterForm.luck, { label: 'Chance' }) }}
+    <button type="button" class="btn btn-info mb-3" id="randomButton" onclick="randomCaracs()">Caractéristiques aléatoires</button>
     {{ form_row(characterForm.isPublic, {label: 'Personnage public'}) }}
     <p><i>Attention : un personnage public sera visible de tous !</i></p>
 <button type="submit" class="btn btn-info btn-lg">Créer le personnage</button>
     {{ form_end(characterForm) }}
 </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/randomCaracs.js') }}"></script>
+{% endblock %}
+
