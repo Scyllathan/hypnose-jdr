@@ -7,23 +7,41 @@
     <h1>Création de personnage</h1>
 
     {{ form_start(characterForm) }}
-    {{ form_row(characterForm.firstName, { label: 'Prénom' }) }}
-    {{ form_row(characterForm.lastName, { label: 'Nom de famille' }) }}
-    {{ form_row(characterForm.age, { label: 'Age' }) }}
-    {{ form_row(characterForm.disease, { label: 'Maladie mentale' }) }}
+    <fieldset class="border p-2 mb-4">
+        <legend class="w-auto">Identité</legend>
+        {{ form_row(characterForm.lastName, { label: 'Nom' }) }}
+        {{ form_row(characterForm.firstName, { label: 'Prénom' }) }}
+        {{ form_row(characterForm.age, { label: 'Age' }) }}
+        {{ form_row(characterForm.disease, { label: 'Maladie mentale' }) }}
+        <button type="button" class="btn btn-info" id="randomIdButton" onclick="randomIdentity()">Identité
+            aléatoire</button>
+    </fieldset>
     {{ form_row(characterForm.story, { label: 'Histoire' }) }}
     {{ form_row(characterForm.powers, { label: 'Pouvoirs' }) }}
     {{ form_row(characterForm.money, { label: 'Bourse' }) }}
     {{ form_row(characterForm.bag, { label: 'Sac-à-dos' }) }}
-    {{ form_row(characterForm.stamina, { label: 'Endurance' }) }}
-    {{ form_row(characterForm.strength, { label: 'Force' }) }}
-    {{ form_row(characterForm.agility, { label: 'Agilité' }) }}
-    {{ form_row(characterForm.speed, { label: 'Rapidité' }) }}
-    {{ form_row(characterForm.intelligence, { label: 'Intelligence' }) }}
-    {{ form_row(characterForm.resilience, { label: 'Resilience' }) }}
-    {{ form_row(characterForm.charisma, { label: 'Charisme' }) }}
-    {{ form_row(characterForm.luck, { label: 'Chance' }) }}
-    <button type="button" class="btn btn-info mb-3" id="randomButton" onclick="randomCaracs()">Caractéristiques aléatoires</button>
+    <fieldset class="border p-2 mb-4">
+        <legend class="w-auto">Caractéristiques</legend>
+        <p><i>La somme des caractéristiques doit être égale à 80</i></p>
+        <div class="row">
+            <div class="col">{{ form_row(characterForm.stamina, { label: 'Endurance' }) }}</div>
+            <div class="col">{{ form_row(characterForm.strength, { label: 'Force' }) }}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{ form_row(characterForm.agility, { label: 'Agilité' }) }}</div>
+            <div class="col">{{ form_row(characterForm.speed, { label: 'Rapidité' }) }}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{ form_row(characterForm.intelligence, { label: 'Intelligence' }) }}</div>
+            <div class="col">{{ form_row(characterForm.resilience, { label: 'Resilience' }) }}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{ form_row(characterForm.charisma, { label: 'Charisme' }) }}</div>
+            <div class="col">{{ form_row(characterForm.luck, { label: 'Chance' }) }}</div>
+        </div>
+        <button type="button" class="btn btn-info" id="randomCaracButton" onclick="randomCaracs()">Caractéristiques
+            aléatoires</button>
+    </fieldset>
     {{ form_row(characterForm.isPublic, {label: 'Personnage public'}) }}
     <p><i>Attention : un personnage public sera visible de tous !</i></p>
 <button type="submit" class="btn btn-info btn-lg">Créer le personnage</button>
@@ -33,5 +51,6 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/randomCaracs.js') }}"></script>
+    <script src="{{ asset('js/randomIdentity.js') }}"></script>
 {% endblock %}
 

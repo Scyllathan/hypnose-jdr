@@ -23,7 +23,7 @@ class Character
     private string $firstName;
 
     #[ORM\Column]
-    #[Assert\GreaterThanOrEqual(12)]
+    #[Assert\GreaterThanOrEqual(10)]
     #[Assert\LessThanOrEqual(80)]
     private int $age;
 

@@ -7,22 +7,33 @@
         <h1>Modification de {{ character.firstName | capitalize }} {{ character.lastName | upper }}</h1>
 
         {{ form_start(characterForm) }}
-        {{ form_row(characterForm.firstName, { label: 'Prénom' }) }}
         {{ form_row(characterForm.lastName, { label: 'Nom de famille' }) }}
+        {{ form_row(characterForm.firstName, { label: 'Prénom' }) }}
         {{ form_row(characterForm.age, { label: 'Age' }) }}
         {{ form_row(characterForm.disease, { label: 'Maladie mentale' }) }}
         {{ form_row(characterForm.story, { label: 'Histoire' }) }}
         {{ form_row(characterForm.powers, { label: 'Pouvoirs' }) }}
         {{ form_row(characterForm.money, { label: 'Bourse' }) }}
         {{ form_row(characterForm.bag, { label: 'Sac-à-dos' }) }}
-        {{ form_row(characterForm.stamina, { label: 'Endurance' }) }}
-        {{ form_row(characterForm.strength, { label: 'Force' }) }}
-        {{ form_row(characterForm.agility, { label: 'Agilité' }) }}
-        {{ form_row(characterForm.speed, { label: 'Rapidité' }) }}
-        {{ form_row(characterForm.intelligence, { label: 'Intelligence' }) }}
-        {{ form_row(characterForm.resilience, { label: 'Resilience' }) }}
-        {{ form_row(characterForm.charisma, { label: 'Charisme' }) }}
-        {{ form_row(characterForm.luck, { label: 'Chance' }) }}
+        <fieldset>
+            <legend>Caractéristiques</legend>
+            <div class="row">
+                <div class="col">{{ form_row(characterForm.stamina, { label: 'Endurance' }) }}</div>
+                <div class="col">{{ form_row(characterForm.strength, { label: 'Force' }) }}</div>
+            </div>
+            <div class="row">
+                <div class="col">{{ form_row(characterForm.agility, { label: 'Agilité' }) }}</div>
+                <div class="col">{{ form_row(characterForm.speed, { label: 'Rapidité' }) }}</div>
+            </div>
+            <div class="row">
+                <div class="col">{{ form_row(characterForm.intelligence, { label: 'Intelligence' }) }}</div>
+                <div class="col">{{ form_row(characterForm.resilience, { label: 'Resilience' }) }}</div>
+            </div>
+            <div class="row">
+                <div class="col">{{ form_row(characterForm.charisma, { label: 'Charisme' }) }}</div>
+                <div class="col">{{ form_row(characterForm.luck, { label: 'Chance' }) }}</div>
+            </div>
+        </fieldset>
         {{ form_row(characterForm.isPublic, {label: 'Personnage public'}) }}
         <button type="submit" class="btn btn-info btn-lg">Appliquer les modifications</button>
         {{ form_end(characterForm) }}
