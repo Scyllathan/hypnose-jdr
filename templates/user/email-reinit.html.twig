@@ -1,0 +1,34 @@
+{% apply inky_to_html|inline_css(source('@css/foundation-emails.scss')) %}
+    <container>
+        <row>
+            <colums>
+                <p>Bonjour <b>{{ user.username }}</b></p>
+            </colums>
+        </row>
+        <spacer size="16"></spacer>
+        <row>
+            <colums>
+                <p>Suite à votre demande, nous avons réinitialisé votre mot de passe.</p>
+            </colums>
+        </row>
+        <spacer size="16"></spacer>
+        <row>
+            <colums>
+                <p>Votre nouveau mot de passe est le suivant :</p>
+                <p><b>{{ plainPassword }}</b></p>
+            </colums>
+        </row>
+        <spacer size="16"></spacer>
+        <row>
+            <colums>
+                <p>Pensez à le changer à votre prochaine connection !</p>
+            </colums>
+        </row>
+        <spacer size="16"></spacer>
+        <row>
+            <colums>
+                <p>A bientôt sur <b>Hypnose - le JDR</b></p>
+            </colums>
+        </row>
+    </container>
+{% endapply %}

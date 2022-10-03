@@ -2,13 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\ReinitType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -42,9 +47,10 @@ class UserController extends AbstractController
                             $form->get('plainPassword')->getData()
                         )
                     );
+                } else {
+                    $this->addFlash('alert', 'Le nouveau mot de passe et sa confirmation doivent être identiques !');
+                    $this->redirectToRoute('app_modify_user');
                 }
-                $this->addFlash('alert', 'Le nouveau mot de passe et sa confirmation doivent être identiques !');
-                $this->redirectToRoute('app_modify_user');
             }
 
             // Envoi des modifications en bdd
@@ -52,7 +58,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('succes', 'Modifications effectuées !');
+            $this->addFlash('success', 'Modifications effectuées !');
             return $this->redirectToRoute('app_modify_user');
         }
 
@@ -72,5 +78,49 @@ class UserController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute( 'app_logout' );
+    }
+
+    #[Route('/mot-de-passe-oublie', name: 'app_forgotten_password')]
+    public function forgottenPassword(Request $request, UserPasswordHasherInterface $userPasswordHasher, MailerInterface $mailer): Response
+    {
+        $form = $this->createForm(ReinitType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $email = $form->get('email')->getData();
+            $entityManager = $this->doctrine->getManager();
+            $repository = $entityManager->getRepository(User::class);
+            $user = $repository->findBy(array('email' => $email));
+
+            if ($user) {
+                $plainPassword = bin2hex(random_bytes(5));
+                $user[0]->setPassword($userPasswordHasher->hashPassword(
+                    $user[0], $plainPassword));
+                $entityManager->persist($user[0]);
+                $entityManager->flush();
+
+                $sentEmail = (new TemplatedEmail())
+                    ->from('scyllathan@gmail.com')
+                    ->to($email)
+                    ->subject('Hypnose-jdr : Réinitialisation du mot de passe')
+                    ->htmlTemplate('user/email-reinit.html.twig')
+                    ->context([
+                        'user' => $user[0],
+                        'plainPassword' => $plainPassword
+                    ]);
+
+                $mailer->send($sentEmail);
+
+                $this->addFlash('success', 'Mot de passe réinitialisé, merci de consulter votre boîte mail !');
+                return $this->redirectToRoute('app_login');
+            }
+
+            $this->addFlash('alert', 'Cet utilisateur n\'existe pas !');
+            return $this->redirectToRoute('app_forgotten_password');
+        }
+
+        return $this->render('user/forgotten-password.html.twig', [
+            'reinitForm' => $form->createView()
+        ]);
     }
 }
