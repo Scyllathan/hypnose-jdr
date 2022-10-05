@@ -20,40 +20,50 @@ class GameController extends AbstractController
     #[Route('/mj/nouvelle-partie', name: 'app_new_game')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Création d'une nouvelle partie et du formulaire vide associé
         $game = new Game();
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'Partie créée !');
+            // Définition de l'utilisateur courant comme créateur de la partie
             $user = $this->getUser();
             $game->setUser($user);
 
+            // Récupération dans un tableau des entrées de personnage dans le formulaire
             $characters = [];
-
             $characters[] = $form->get("character1")->getData();
             $characters[] = $form->get("character2")->getData();
             $characters[] = $form->get("character3")->getData();
             $characters[] = $form->get("character4")->getData();
             $characters[] = $form->get("character5")->getData();
 
-            $repository = $entityManager->getRepository(Character::class);
-
+            // Pour chaque personnage entré dans le formulaire, on récupère l'entité character si elle existe.
             foreach ($characters as $character) {
                 if ($character !== null) {
-                    $character = $repository->findBy(array('id' => $character));
-                    if ($character[0]->getGame() === null) {
-                        $game->addCharacter($character[0]);
+                    $repository = $entityManager->getRepository(Character::class);
+                    $character = $repository->find($character);
+                    $characterGame = null;
+                    // Si le personnage n'a pas encore de partie, on le lie à la partie
+                    if ($character) {
+                        $characterGame = $character->getGame();
+                        if ($characterGame === null) {
+                            $game->addCharacter($character);
+                        } else {
+                            $this->addFlash('alert', sprintf('%s %s n\'a pas été ajouté, il est déjà lié à une autre partie !', $character->getFirstName(), $character->getLastName()));
+                        }
                     } else {
-                        $this->addFlash('alert', sprintf('%s %s n\'a pas été ajouté, il est déjà lié à une autre partie !', $character[0]->getFirstName(), $character[0]->getLastName()));
+                        $this->addFlash('alert', 'Vous avez tenté d\'ajouter un personnage qui n\'existe pas');
                     }
                 }
             }
 
+            // Envoie en BDD du tuple
             $entityManager->persist($game);
             $entityManager->flush();
 
-            return $this->redirectToRoute('index');
+            $this->addFlash('success', 'Partie créée !');
+            return $this->redirectToRoute('app_game_list');
         }
 
         return $this->render('game/index.html.twig', [
@@ -63,9 +73,9 @@ class GameController extends AbstractController
     #[Route('/mj/mes-parties', name: 'app_game_list')]
     public function showGames(): Response
     {
+        // Récupération en BDD de toutes les parties de l'utilisateur
         $entityManager = $this->doctrine->getManager();
         $repository = $entityManager->getRepository(Game::class);
-
         $userId = $this->getUser()->getId();
         $games = $repository->findBy(array('user' => $userId));
 
@@ -80,7 +90,20 @@ class GameController extends AbstractController
         $game = $repository->find($id);
         $userId = $this->getUser()->getId();
 
+        // Vérification que la partie existe et que l'utilisateur en est le créateur
         if ($game && $game->getUser()->getId() === $userId) {
+            // Récupération en BDD des personnages liés à la partie
+            $repository2 = $entityManager->getRepository(Character::class);
+            $characters = $repository2->findBy( array('game' => $game->getId()));
+            // Suppression du contenu de la colonne game pour chaque personnage de la partie et envoi en BDD
+            if ($characters) {
+                foreach ($characters as $character) {
+                    $character->setGame(null);
+                    $entityManager->persist($character);
+                    $entityManager->flush();
+                }
+            }
+            // Suppression de la partie et envoi en BDD
             $repository->remove($game, true);
             $this->addFlash('success', sprintf('La partie "%s" a bien été supprimée !', $game->getName()));
         } else if ($game && $game->getUser()->getId() !== $userId) {
@@ -95,59 +118,68 @@ class GameController extends AbstractController
     #[Route('/mj/modifier-partie/{id}', name: 'app_modify_game')]
     public function modifyGame(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Récupération en BDD de la partie correspondant à l'id de l'url
         $repository = $entityManager->getRepository(Game::class);
         $game = $repository->find($id);
-        $userId = $this->getUser()->getId();
+
+        // Création du formulaire prérempli avec l'entité game récupérée
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
 
-        $games = $repository->findBy(array('user' => $userId));
+        $userId = $this->getUser()->getId();
 
+        // Vérification que la partie existe et que l'utilisateur en est le créateur
         if ($game && $game->getUser()->getId() === $userId) {
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->addFlash('success', 'Partie modifié !');
 
+                // Suppression du contenu de la colonne game pour chaque ancien personnage de la partie et envoi en BDD
                 foreach($game->getCharacters() as $player) {
                     $game->removeCharacter($player);
                 }
-
                 $entityManager->persist($game);
                 $entityManager->flush();
 
+                // Récupération dans un tableau des nouvelles entrées de personnage dans le formulaire
                 $characters = [];
-
                 $characters[] = $form->get("character1")->getData();
                 $characters[] = $form->get("character2")->getData();
                 $characters[] = $form->get("character3")->getData();
                 $characters[] = $form->get("character4")->getData();
                 $characters[] = $form->get("character5")->getData();
 
-                $repository = $entityManager->getRepository(Character::class);
-
-                $count = count($characters);
-
-                for ($i = 0 ; $i < $count ; $i++) {
-                    if ($characters[$i] !== null) {
-                        $characters[$i] = $repository->findBy(array('id' => $characters[$i]));
-                        if ($characters[$i][0]->getGame() === null) {
-                            $game->addCharacter($characters[$i][0]);
+                // Pour chaque personnage entré dans le formulaire, on récupère l'entité character si elle existe.
+                foreach ($characters as $character) {
+                    if ($character !== null) {
+                        $repository = $entityManager->getRepository(Character::class);
+                        $character = $repository->find($character);
+                        $characterGame = null;
+                        if ($character) {
+                            // Si le personnage n'a pas encore de partie, on le lie à la partie qu'on modifie
+                            $characterGame = $character->getGame();
+                            if ($characterGame === null) {
+                                $game->addCharacter($character);
+                            } else {
+                                $this->addFlash('alert', sprintf('%s %s n\'a pas été ajouté, il est déjà lié à une autre partie !', $character->getFirstName(), $character->getLastName()));
+                            }
                         } else {
-                            $this->addFlash('alert', sprintf('%s %s n\'a pas été ajouté, il est déjà lié à une autre partie !', $characters[$i]->getFirstName(), $characters[$i]->getLastName()));
+                            $this->addFlash('alert', 'Vous avez tenté d\'ajouter un personnage qui n\'existe pas');
                         }
                     }
                 }
 
-                    $entityManager->persist($game);
-                    $entityManager->flush();;
+                // Envoi des modifications en BDD
+                $entityManager->persist($game);
+                $entityManager->flush();
 
-                    return $this->render('game/game-list.html.twig', [ 'games' => $games ]);
-                }
-            } else if ($game && $game->getUser()->getId() !== $userId) {
-            $this->addFlash('alert', 'On ne peut pas modifier les personnages des autres !');
-            return $this->render('game/game-list.html.twig', [ 'games' => $games ]);
+                $this->addFlash('success', sprintf('La partie "%s" a été modifiée !', $game->getName()));
+                return $this->redirectToRoute('app_game_list');
+            }
+        } else if ($game && $game->getUser()->getId() !== $userId) {
+            $this->addFlash('alert', 'On ne peut pas modifier les parties des autres !');
+            return $this->redirectToRoute('app_game_list');
         } else {
-            $this->addFlash('alert', 'Ce personnage n\'existe pas');
-            return $this->render('game/game-list.html.twig', [ 'games' => $games ]);
+            $this->addFlash('alert', 'Cette partie n\'existe pas');
+            return $this->redirectToRoute('app_game_list');
         }
 
         return $this->render('game/modify-game.html.twig', [
@@ -157,20 +189,30 @@ class GameController extends AbstractController
     #[Route('joueur/voir-partie/{id}', name: 'app_game')]
     public function gameDetail(int $id): Response
     {
+        // Récupération en BDD de la partie correspondant à l'id de l'url
         $entityManager = $this->doctrine->getManager();
         $repository = $entityManager->getRepository(Game::class);
         $game = $repository->find($id);
+
+        // Récupération en BDD des résumés de la partie récupérée ci-dessus
         $repository = $entityManager->getRepository(Summary::class);
         $summaries = $repository->findBy(array('game' => $id));
+
         $userId = $this->getUser()->getId();
 
+        // Récupération en BDD des personnages liés à l'utilisateur
         $repository = $entityManager->getRepository(Character::class);
         $characters = $repository->findBy(array('user' => $userId));
+        // Récupération dans un tableau des personnages de l'utilisateur qui participent à la partie
         $charactersGamesIds = [];
         foreach ($characters as $character) {
-            $charactersGamesIds[] = $character->getGame()->getId();
+            if ($character->getGame()) {
+                $charactersGamesIds[] = $character->getGame()->getId();
+            }
         }
 
+        // Affichage de la page uniquement si la partie existe et que l'utilisateur en est le créateur ou qu'un de
+        // ses personnages y participe.
         if ($game  && ($game->getUser()->getId() === $userId || in_array($id, $charactersGamesIds))) {
             return $this->render('game/game-detail.html.twig', ['game' => $game, 'summaries' => $summaries ]);
         } else if ($game && $game->getUser()->getId() !== $userId) {
@@ -178,6 +220,6 @@ class GameController extends AbstractController
         } else {
             $this->addFlash('alert', 'Cette partie n\'existe pas');
         }
-        return $this->redirectToRoute('index');
+        return $this->redirectToRoute('app_game_list');
     }
 }

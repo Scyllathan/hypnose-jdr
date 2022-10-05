@@ -20,26 +20,36 @@ class SummaryController extends AbstractController
     #[Route('/mj/nouveau-resume/{id}', name: 'app_new_summary')]
     public function index(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
-        // Création du formulaire
+        // Création d'un nouveau résumé et du formulaire vide associé
         $summary = new Summary();
         $form = $this->createForm(SummaryType::class, $summary);
         $form->handleRequest($request);
 
-        // Récupération de l'entité Game associé à l'id en GET
+        // Récupération de l'entité Game associé à l'id de l'url
         $entityManager = $this->doctrine->getManager();
         $repository = $entityManager->getRepository(Game::class);
         $game = $repository->find($id);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $userId = $this->getUser()->getId();
 
-            // Complétion de l'entité Summary et envoi en BDD
-            $summary->setGame($game);
-            $entityManager->persist($summary);
-            $entityManager->flush();
+        // Vérification que la partie existe et que l'utilisateur en est le créateur
+        if ($game && $game->getUser()->getId() === $userId) {
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->addFlash('success', 'Résumé créé !');
+                // Ajout de la partie à l'entité Summary et envoi en BDD
+                $summary->setGame($game);
+                $entityManager->persist($summary);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_game', ['id' => $id]);
+                $this->addFlash('success', 'Résumé créé !');
+                return $this->redirectToRoute('app_game', ['id' => $id]);
+            }
+        } elseif ($game && $game->getUser()->getId() !== $userId) {
+            $this->addFlash('alert', 'Impossible d\'écrire un résumé pour les parties des autres !');
+            return $this->redirectToRoute('app_game_list');
+        } else {
+            $this->addFlash('alert', 'Impossible d\'écrire un résumé pour une partie inexistante !');
+            return $this->redirectToRoute('app_game_list');
         }
 
         return $this->render('summary/index.html.twig', [
@@ -53,6 +63,9 @@ class SummaryController extends AbstractController
         $entityManager = $this->doctrine->getManager();
         $repository = $entityManager->getRepository(Summary::class);
         $summary = $repository->find($id);
+        if ($summary) {
+            $content = nl2br($summary->getContent(), false);
+        }
 
         // Récupération des données de vérification d'accès
         $userId = $this->getUser()->getId();
@@ -60,7 +73,9 @@ class SummaryController extends AbstractController
         $characters = $repository->findBy(array('user' => $userId));
         $charactersGamesIds = [];
         foreach ($characters as $character) {
-            $charactersGamesIds[] = $character->getGame()->getId();
+            if ($character->getGame()) {
+                $charactersGamesIds[] = $character->getGame()->getId();
+            }
         }
         if ($summary){
             $summaryGameId = $summary->getGame()->getId();
@@ -68,7 +83,7 @@ class SummaryController extends AbstractController
 
         // Vérifications d'accès et redirection + flash message
         if ($summary && ($summary->getGame()->getUser()->getId() === $userId || in_array($summaryGameId, $charactersGamesIds))) {
-            return $this->render('summary/summary-detail.html.twig', [ 'summary' => $summary ]);
+            return $this->render('summary/summary-detail.html.twig', [ 'summary' => $summary, 'content' => $content ]);
         } else if ($summary && $summary->getGame()->getUser()->getId() !== $userId) {
             $this->addFlash('alert', 'On ne peut pas voir les résumés des parties des autres !');
         } else {
@@ -81,11 +96,9 @@ class SummaryController extends AbstractController
     #[Route('/mj/modifier-resume/{id}', name: 'app_modify_summary')]
     public function modifySummary(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Récupération de l'entité Summary associée à l'id en GET
+        // Récupération de l'entité Summary associée à l'id de l'url et création du formulaire associé
         $repository = $entityManager->getRepository(Summary::class);
         $summary = $repository->find($id);
-
-        // Création du formulaire
         $form = $this->createForm(SummaryType::class, $summary);
         $form->handleRequest($request);
 

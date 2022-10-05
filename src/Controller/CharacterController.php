@@ -73,20 +73,23 @@ class CharacterController extends AbstractController
         $entityManager = $this->doctrine->getManager();
         $repository = $entityManager->getRepository(Character::class);
         $character = $repository->find($id);
+        if ($character) {
+            $story = nl2br($character->getStory(), false);
+            $powers = nl2br($character->getPowers(), false);
+            $bag = nl2br($character->getBag(), false);
+        }
         $userId = $this->getUser()->getId();
 
         if ($character  && ($character->getUser()->getId() === $userId || $character->isIsPublic())) {
-            return $this->render('character/character-detail.html.twig', ['character' => $character]);
+            return $this->render('character/character-detail.html.twig', ['character' => $character, 'story' =>
+                $story, 'powers' => $powers, 'bag' => $bag]);
         } else if ($character && $character->getUser()->getId() !== $userId) {
             $this->addFlash('alert', 'On ne peut pas voir les personnages des autres !');
         } else {
             $this->addFlash('alert', 'Ce personnage n\'existe pas');
         }
 
-        $userId = $this->getUser()->getId();
-        $characters = $repository->findBy(array('user' => $userId));
-
-        return $this->render('character/character-list.html.twig', ['characters' => $characters]);
+        return $this->redirectToRoute('app_character_list');
     }
 
     #[Route('/joueur/supprimer-personnage/{id}', name: 'app_del_character')]
@@ -107,9 +110,7 @@ class CharacterController extends AbstractController
             $this->addFlash('alert', 'Ce personnage n\'existe pas');
         }
 
-        $characters = $repository->findBy(array('user' => $userId));
-
-        return $this->render('character/character-list.html.twig', ['characters' => $characters]);
+        return $this->redirectToRoute('app_character_list');
     }
 
     #[Route('/joueur/modifier-personnage/{id}', name:'app_modify_character')]
@@ -121,7 +122,6 @@ class CharacterController extends AbstractController
         $form->handleRequest($request);
 
         $userId = $this->getUser()->getId();
-        $characters = $repository->findBy(array('user' => $userId));
 
         if ($character && $character->getUser()->getId() === $userId) {
             if ($form->isSubmitted() && $form->isValid()) {
@@ -131,14 +131,14 @@ class CharacterController extends AbstractController
                 $entityManager->persist($character);
                 $entityManager->flush();
 
-                return $this->render('character/character-list.html.twig', ['characters' => $characters]);
+                return $this->redirectToRoute('app_character_list');
             }
         } else if ($character && $character->getUser()->getId() !== $userId) {
             $this->addFlash('alert', 'On ne peut pas modifier les personnages des autres !');
-            return $this->render('character/character-list.html.twig', ['characters' => $characters]);
+            return $this->redirectToRoute('app_character_list');
         } else {
             $this->addFlash('alert', 'Ce personnage n\'existe pas');
-            return $this->render('character/character-list.html.twig', ['characters' => $characters]);
+            return $this->redirectToRoute('app_character_list');
         }
 
         return $this->render('character/modify-character.html.twig', [
@@ -153,19 +153,19 @@ class CharacterController extends AbstractController
         $character = $repository->find($id);
         $userId = $this->getUser()->getId();
 
-        if ($character && $character->getUser()->getId() === $userId) {
+        if ($character && $character->getUser()->getId() === $userId && $character->getGame() !== null) {
             $character->setGame(null);
             $entityManager->persist($character);
             $entityManager->flush();
             $this->addFlash('success', 'Votre personnage a quitté sa partie');
+        } elseif ($character && $character->getUser()->getId() === $userId && $character->getGame() === null) {
+            $this->addFlash('alert', 'Votre personnage n\'a pas de partie à quitter !');
         } else if ($character && $character->getUser()->getId() !== $userId) {
             $this->addFlash('alert', 'On ne peut pas faire quitter sa partie au personnage d\'un autre !');
         } else {
             $this->addFlash('alert', 'Ce personnage n\'existe pas');
         }
 
-        $characters = $repository->findBy(array('user' => $userId));
-
-        return $this->render('character/character-list.html.twig', ['characters' => $characters]);
+        return $this->redirectToRoute('app_character_list');
     }
 }

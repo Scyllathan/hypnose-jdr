@@ -9,9 +9,7 @@
     <h1 class="my-3">{{ summary.title }}</h1>
     <p>{{ summary.sessionDate|date("d/m/Y") }}</p>
     <div class="container bg-light rounded mx-0 my-2 p-2">
-        <p>
-            <pre class="font-boot">{{ summary.content }}</pre>
-        </p>
+        <p>{{ content|raw }}</p>
     </div>
 </div>
 {% endblock %}

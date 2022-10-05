@@ -8,38 +8,38 @@
             personnages</a>
         <h1 class="mb-5 text-center">{{ character.firstName | capitalize }} {{ character.lastName | upper
             }}</h1>
-        <div class="container mx-0 my-3 p-0">
-            {% if character.user.id == app.user.id %}
-            <p><b>Identifiant n° {{ character.id }}</b>
-                {% if character.game is null %}
-                (à donner à votre MJ pour être ajouté à une partie)
-                {% endif %}
-            </p>
-            {% endif %}
-            <p><b>Personnage public :</b>
-                {% if character.isPublic %}
-                    Oui
-                {% else %}
-                    Non
-                {% endif %}
-            </p>
-            <p><b>Partie</b> :
-                {% if character.game is null %}
-                    Aucune pour le moment...
-                {% else %}
-                    {{ character.game.name }}
-                {% endif %}
+        <div class="col col-md-6 p-0">
+            <div class="container mx-0 my-4 py-2 bg-light rounded">
+                <p><b>Identifiant n° {{ character.id }}</b>
+                    {% if character.game is null %}
+                        (à donner à votre MJ pour être ajouté à une partie)
+                    {% endif %}
                 </p>
-            {% if character.user.id == app.user.id and character.game is not null %}
-                <a href="{{ path('app_game', { 'id': character.game.id }) }}" role="button" class="btn btn-info
+                <p><b>Créateur :</b> {{ character.user.username }}</p>
+                <p><b>Personnage public :</b>
+                    {% if character.isPublic %}
+                        Oui
+                    {% else %}
+                        Non
+                    {% endif %}
+                </p>
+                <p><b>Partie</b> :
+                    {% if character.game is null %}
+                        Aucune pour le moment...
+                    {% else %}
+                        {{ character.game.name }}
+                    {% endif %}
+                </p>
+                {% if character.user.id == app.user.id and character.game is not null %}
+                    <a href="{{ path('app_game', { 'id': character.game.id }) }}" role="button" class="btn btn-info
                 mb-2">Voir
-                    ses aventures</a>
-                <a href="{{ path('app_quit_game', { 'id': character.id }) }}" role="button" class="btn btn-danger mb-2"
-                   onclick="return confirm('Êtes vous sûr de vouloir quitter cette partie ?');"
-                >Quitter la partie</a>
-            {% endif %}
+                        ses aventures</a>
+                    <a href="{{ path('app_quit_game', { 'id': character.id }) }}" role="button" class="btn btn-danger mb-2"
+                       onclick="return confirm('Êtes vous sûr de vouloir quitter cette partie ?');"
+                    >Quitter la partie</a>
+                {% endif %}
+            </div>
         </div>
-
 
         <p class="my-4"><b>Age</b> : {{ character.age }}</p>
         <p class="my-4"><b>Maladie Mentale</b> : {{ character.disease | capitalize }}</p>
@@ -48,14 +48,14 @@
             {% if character.story is null %}
                 Inconnue pour le moment...
             {% endif %}
-            <p><pre class="font-boot">{{ character.story }}</pre></p>
+            <p>{{ story|raw }}</p>
         </div>
         <p class="my-4"><b>Pouvoirs</b> :</p>
         <div class="container bg-light rounded mx-0 my-2 p-2">
             {% if character.powers is null %}
                 Inconnus pour le moment...
             {% endif %}
-            <p><pre class="font-boot">{{ character.powers }}</pre></p>
+            <p>{{ powers|raw }}</p>
         </div>
         <p class="my-4"><b>Bourse</b> : {{ character.money }} rubz</p>
         <p class="my-4"><b>Sac-à-dos</b> :</p>
@@ -63,27 +63,37 @@
             {% if character.bag is null %}
                 Vide pour le moment...
             {% endif %}
-            <p><pre class="font-boot">{{ character.bag }}</pre></p>
+            <p>{{ bag|raw }}</p>
         </div>
         <p class="mt-4"><b>Caractéristiques</b> :</p>
-        <table class="table table-striped table-hover table-responsive-sm text-center">
+        <table class="table table-striped table-hover table-responsive-xs text-center">
             <thead>
             <tr>
                 <th>Corps</th>
                 <th>Esprit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ character.stamina + character.strength + character.agility + character.speed }}</td>
+                <td>{{ character.intelligence + character.resilience + character.charisma + character.luck }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-striped table-hover table-responsive-lg text-center">
+            <thead>
+            <tr>
                 <th>Endurance</th>
                 <th>Force</th>
                 <th>Agilité</th>
                 <th>Rapidité</th>
-                <th>Intelligence</th>
+                <th>Intell<span class="d-xl-inline d-none">igence</span></th>
                 <th>Résilience</th>
                 <th>Charisme</th>
                 <th>Chance</th>
             </tr>
             </thead>
             <tbody>
-            <td>{{ character.stamina + character.strength + character.agility + character.speed }}</td>
-            <td>{{ character.intelligence + character.resilience + character.charisma + character.luck }}</td>
             <td>{{ character.stamina }}</td>
             <td>{{ character.strength }}</td>
             <td>{{ character.agility }}</td>
@@ -93,6 +103,7 @@
             <td>{{ character.charisma }}</td>
             <td>{{ character.luck }}</td>
             </tbody>
+        </table>
 
     </div>
 {% endblock %}

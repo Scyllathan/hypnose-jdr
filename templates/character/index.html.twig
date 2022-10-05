@@ -22,7 +22,10 @@
     {{ form_row(characterForm.bag, { label: 'Sac-à-dos' }) }}
     <fieldset class="border p-2 mb-4">
         <legend class="w-auto">Caractéristiques</legend>
-        <p><i>La somme des caractéristiques doit être égale à 80</i></p>
+        <p><i>La somme des caractéristiques doit être égale à 80 (<a href="{{ path('regles') }}#carac-desc"
+                                                                     class="text-info"><b>voir les règles</b></a> pour plus
+                de détails)
+            </i></p>
         <div class="row">
             <div class="col">{{ form_row(characterForm.stamina, { label: 'Endurance' }) }}</div>
             <div class="col">{{ form_row(characterForm.strength, { label: 'Force' }) }}</div>
