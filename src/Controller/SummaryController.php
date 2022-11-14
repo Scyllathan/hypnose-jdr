@@ -18,7 +18,7 @@ class SummaryController extends AbstractController
     public function __construct(private ManagerRegistry $doctrine) {}
 
     #[Route('/mj/nouveau-resume/{id}', name: 'app_new_summary')]
-    public function index(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    public function newSummary(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         // Création d'un nouveau résumé et du formulaire vide associé
         $summary = new Summary();

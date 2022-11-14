@@ -2,6 +2,10 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Vous pourrez trouver ici tout le nécessaire pour entamer une partie du jeu
+        de rôle Hypnose et vous assister au long de vos parties.">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" type="image/png" href="{{ asset('images/pendule-logo.png') }}" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -14,31 +18,28 @@
         {% endblock %}
     </head>
     <body>
-    <div class="container-fluid">
-        <div class="row">
-            {% include 'default/_navbar.html.twig' %}
-            <div class="col-sm min-vh-100 bg-body py-3 px-0 px-md-3">
-                <!-- content -->
-                {% for message in app.flashes('success') %}
-                    <div class="alert alert-success">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-                {% for message in app.flashes('alert') %}
-                    <div class="alert alert-danger">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-                {% include 'default/_auth-buttons.html.twig' %}
-                <div class="container d-flex justify-content-center col-sm-12 px-0 px-sm-2">
-                    <div class="bg-main rounded mt-2 mt-sm-4 w-100">
-                        {% block body %}{% endblock %}
-                    </div>
-
+        <div class="container-fluid">
+            <div class="row">
+                {% include 'default/_navbar.html.twig' %}
+                <div class="col-sm min-vh-100 bg-body py-3 px-0 px-md-3">
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('alert') %}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% include 'default/_auth-buttons.html.twig' %}
+                    <main class="container d-flex justify-content-center col-sm-12 px-0 px-sm-2">
+                        <div class="bg-main rounded mt-2 mt-sm-4 w-100">
+                            {% block body %}{% endblock %}
+                        </div>
+                    </main>
                 </div>
-
             </div>
         </div>
-    </div>
     </body>
 </html>

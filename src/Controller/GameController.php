@@ -18,7 +18,7 @@ class GameController extends AbstractController
     public function __construct(private ManagerRegistry $doctrine) {}
 
     #[Route('/mj/nouvelle-partie', name: 'app_new_game')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function newGame(Request $request, EntityManagerInterface $entityManager): Response
     {
         // Création d'une nouvelle partie et du formulaire vide associé
         $game = new Game();
@@ -203,14 +203,13 @@ class GameController extends AbstractController
         // Récupération en BDD des personnages liés à l'utilisateur
         $repository = $entityManager->getRepository(Character::class);
         $characters = $repository->findBy(array('user' => $userId));
-        // Récupération dans un tableau des personnages de l'utilisateur qui participent à la partie
+        // Récupération dans un tableau des identifiants de partie des personnages de l'utilisateur
         $charactersGamesIds = [];
         foreach ($characters as $character) {
             if ($character->getGame()) {
                 $charactersGamesIds[] = $character->getGame()->getId();
             }
         }
-
         // Affichage de la page uniquement si la partie existe et que l'utilisateur en est le créateur ou qu'un de
         // ses personnages y participe.
         if ($game  && ($game->getUser()->getId() === $userId || in_array($id, $charactersGamesIds))) {

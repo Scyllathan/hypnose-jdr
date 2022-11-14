@@ -9,30 +9,30 @@
 
         <div class="container m-4 bg-light rounded p-lg-2 px-0">
             <h2>Sommaire</h2>
-            <ul>
-                <li><a href="#carac" class="text-info"><b>Caractéristiques</b></a>
-                    <ul>
+            <ol>
+                <li><b><a href="#carac" class="text-info">Caractéristiques</a></b>
+                    <ol type="a">
                         <li><a href="#carac-desc" class="text-info">Description des caractéristiques et sous-caractéristiques</a></li>
                         <li><a href="#carac-prop" class="text-info">Propriétés et fonctionnement des caractéristiques et
                                 sous-caractéristiques</a></li>
-                    </ul>
+                    </ol>
                 </li>
                 <li><a href="#compet" class="text-info"><b>Compétences</b></a></li>
                 <li><a href="#combat" class="text-info"><b>Combat</b></a>
-                    <ul>
+                    <ol type="a">
                         <li><a href="#initiative" class="text-info">Initiative</a></li>
                         <li><a href="#tour" class="text-info">Tour d'action</a></li>
                         <li><a href="#fuite" class="text-info">Cas particulier de la fuite</a></li>
                         <li><a href="#calcul-deg" class="text-info">Calcul des dégâts, blessures et décès</a></li>
-                    </ul>
+                    </ol>
                 </li>
                 <li><a href="##gain-xp" class="text-info"><b>Gain d'expérience</b></a></li>
-            </ul>
+            </ol>
         </div>
 
 
         <div class="container mb-5">
-            <h3 id="carac">Caractéristiques</h3>
+            <h3 id="carac">1. Caractéristiques</h3>
             <p><b>Corps</b> qui dépend des 4 sous-caractéristiques suivantes :</p>
             <ul>
                 <li class="my-1">Endurance</li>
@@ -47,7 +47,7 @@
                 <li class="my-1">Charisme</li>
                 <li class="my-1">Chance</li>
             </ul>
-            <h4 id="carac-desc">Description des caractéristiques et sous-caractéristiques</h4>
+            <h4 id="carac-desc">a. Description des caractéristiques et sous-caractéristiques</h4>
             <ul>
                 <li class="nd-list my-1"><b>Corps :</b> cette valeur représente la santé de votre personnage. Plus elle
                     est
@@ -78,24 +78,24 @@
                     chance
                     à Dreamland, allez savoir pourquoi…</li>
             </ul>
-            <h4 id="carac-prop">Propriétés et fonctionnement des caractéristiques et sous-caractéristiques</h4>
+            <h4 id="carac-prop">b. Propriétés et fonctionnement des caractéristiques et sous-caractéristiques</h4>
             <p>Chaque sous-caractéristique a une valeur comprise entre 1 et 20, la moyenne des gens lambdas se situant entre 8 et 12. En dessous de 5, on parle de réel handicap. Au-dessus de 15, de douance.</p>
             <p>La valeur de chaque caractéristique est égale à la somme de ses sous-caractéristiques.</p>
             <p>A la création de personnage, il faudra distribuer au total 80 points tout en restant cohérent au niveau roleplay.</p>
             <p>Ces caractéristiques et sous-caractéristiques pourront être augmentées par l’entraînement couplé à l'achat en xp et par la possession d'objets. Néanmoins, si l'augmentation par l’entraînement a eu lieu à Dreamland, un retour dans le monde réel remettra toutes les valeurs à leur état initial et les xp ne seront pas récupérés. A contrario, toute valeur gagnée dans le monde réel sera conservée.</p>
             <p>La réussite d'une action découle d'un jet de dé dans la caractéristique correspondante (modifié par la compétence associée si elle existe). Il faudra faire au dé la valeur de sa caractéristique ou moins pour pouvoir réussir. Un 1 représente une réussite critique, un 20 un échec critique. Certaines actions particulièrement faciles ou difficiles subiront des bonus/malus choisis arbitrairement par le MJ.</p>
-
-            <h3 id="compet">Compétences</h3>
+            <hr>
+            <h3 id="compet">2. Compétences</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lacus nibh, efficitur vitae arcu quis, convallis feugiat magna. Integer sit amet enim vel justo bibendum hendrerit. Nulla semper elit varius neque malesuada pulvinar. Ut eu congue ante. Integer quis venenatis purus. Etiam interdum dui id ex dignissim finibus. Vestibulum sed gravida ipsum. Morbi ut cursus massa. Morbi vel diam sem. Quisque efficitur ex non velit molestie maximus. Cras felis arcu, faucibus vitae euismod semper, aliquam nec ipsum. Suspendisse eleifend dapibus nisl vitae efficitur. Ut tempus malesuada massa, non bibendum leo. Mauris lacus metus, varius eu tortor placerat, volutpat pellentesque urna.</p>
-
-            <h3 id="combat">Combat</h3>
-            <h4 id="initiative">Initiative</h4>
+            <hr>
+            <h3 id="combat">3. Combat</h3>
+            <h4 id="initiative">a. Initiative</h4>
             <h5>Combat classique :</h5>
             <p>Comparaison de la rapidité des différents combattants : organisation par rapidité décroissante. En cas d’égalité, chaque joueur concerné lance un D20 et celui qui fait le score le plus bas remporte l’initiative (relancer les dés en cas d’égalité, jusqu’à un résultat différent).
             </p>
             <h5>Attaque surprise :</h5>
             <p>Le camp organisant l’attaque surprise aura toujours l’initiative. Au sein de ce groupe, les personnages peuvent agir dans l’ordre qu’ils souhaitent (mais cet ordre doit ensuite être conservé). Le camp subissant l’embuscade devra résoudre l’initiative au sein de son groupe de manière classique.</p>
-            <h4 id="tour">Tour d'action</h4>
+            <h4 id="tour">b. Tour d'action</h4>
             <p>Lors de son tour, le personnage pourra effectuer les actions suivantes, dans l’ordre qu’il souhaite :</p>
             <ul>
                 <li>Un déplacement (deux si la rapidité du personnage est supérieure ou égale à 15)</li>
@@ -121,7 +121,7 @@
 
                 </p>
             </div>
-            <h4 id="fuite">Cas particulier de la fuite</h4>
+            <h4 id="fuite">c. Cas particulier de la fuite</h4>
             <p>Au lieu d’effectuer son tour d’action, il est possible de tenter de fuir. Le tour d’action est perdu même si la fuite échoue.
             </p>
             <p>Pour qu’un personnage puisse s’enfuir, il doit réussir un jet de rapidité (bonus/malus possible selon les circonstances). </p>
@@ -130,7 +130,7 @@
             <p>En cas de fuite réussie, le personnage sera considéré assez loin pour être hors de portée des ennemis,
                 mais aussi bien trop pour rejoindre le combat de nouveau. Tout départ du combat est définitif.</p>
 
-            <h4 id="calcul-deg">Calcul des dégâts, blessures et décès</h4>
+            <h4 id="calcul-deg">d. Calcul des dégâts, blessures et décès</h4>
             <h5>Calcul des dégâts</h5>
             <p>En cas d’attaque armée ou d’utilisation de pouvoir, les dégâts infligés dépendent de l’arme/pouvoir utilisé(e).</p>
             <p>En cas d’attaque à main nue, les dégâts infligés dépendent de la sous-caractéristique Force selon le calcul suivant : Force / 2 (arrondi à l’inférieur).</p>
@@ -150,7 +150,8 @@
             <p>Certains objets permettent de se prémunir contre la mort (à Dreamland), de manière unique, après quoi ils perdront leur effet.</p>
             <p>Dans le cas d’un décès à Dreamland, seul l’esprit est détruit. Le corps quant à lui reste vivant mais végétatif dans le monde réel.</p>
             <p>Dans le cas d’un décès dans le monde réel, il est total (corps et esprit) et aucun recours n’est possible.</p>
-            <h3 id="#gain-xp">Gain d'expérience</h3>
+            <hr>
+            <h3 id="#gain-xp">4. Gain d'expérience</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lacus nibh, efficitur vitae arcu quis, convallis feugiat magna. Integer sit amet enim vel justo bibendum hendrerit. Nulla semper elit varius neque malesuada pulvinar. Ut eu congue ante. Integer quis venenatis purus. Etiam interdum dui id ex dignissim finibus. Vestibulum sed gravida ipsum. Morbi ut cursus massa. Morbi vel diam sem. Quisque efficitur ex non velit molestie maximus. Cras felis arcu, faucibus vitae euismod semper, aliquam nec ipsum. Suspendisse eleifend dapibus nisl vitae efficitur. Ut tempus malesuada massa, non bibendum leo. Mauris lacus metus, varius eu tortor placerat, volutpat pellentesque urna.</p>
         </div>
     </div>
