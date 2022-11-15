@@ -16,9 +16,7 @@ function randomCaracs() {
     for (let i = 0; i < 8; i++) {
         caracsValues.push(Math.round(Math.random() * 10));
     }
-
     const remainings = 80 - caracsValues.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
-
     if ( remainings % 8 === 0 ) {
         add = remainings / 8;
     } else {
@@ -31,11 +29,9 @@ function randomCaracs() {
             i++;
         }
     }
-
     for (let i=0; i < 8; i++) {
         caracsValues[i] += add;
     }
-
 // Boucle pour attribuer les valeurs de caracsValues aux différentes caracs
     for (i = 0 ; i < 8; i++) {
         caracs[i].value = caracsValues[i];

@@ -41,3 +41,12 @@ nav li {
 nav li:hover {
   font-size: 110%;
 }
+
+.circle {
+  background: white;
+  width: 25px;
+  height: 25px;
+  position: relative;
+  top: 25px; right: 15px;
+  margin-right: -25px;
+}

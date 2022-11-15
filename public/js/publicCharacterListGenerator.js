@@ -3,8 +3,7 @@ httpRequest = new XMLHttpRequest();
 httpRequest.onreadystatechange = function() {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         const data = httpRequest.response;
-        let dataReformat = JSON.parse(data.replace(/&quot;/ig,'"'));
-        let characters = dataReformat;
+        let characters = JSON.parse(data.replace(/&quot;/ig,'"'));
         let characterList = document.getElementById('characterList');
 
         for (let i = 0; i < characters.length; i++) {
@@ -12,8 +11,6 @@ httpRequest.onreadystatechange = function() {
             let url = detailUrlGenerator(characters[i]);
             characterList.innerHTML += characterHtmlGenerator(characters[i], game, url);
         }
-    } else {
-        // pas encore prête
     }
 };
 
