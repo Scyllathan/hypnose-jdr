@@ -23,7 +23,7 @@ class MessageController extends AbstractController
     {
         $entityManager = $this->doctrine->getManager();
         $repository = $entityManager->getRepository(Message::class);
-        $messages = $repository->findBy(array('sendTo' => $this->getUser()->getId()));
+        $messages = $repository->findBy(array('sendTo' => $this->getUser()->getId()), array('sendingDate' => 'DESC'));
 
         return $this->render('message/messages-list.html.twig', [
             'messages' => $messages

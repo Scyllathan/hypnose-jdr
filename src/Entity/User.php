@@ -292,4 +292,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function unreadMessages(): int
+    {
+        $count = 0;
+        foreach ($this->messagesReceived as $message) {
+            if (!$message->isIsRead()) {
+                $count++;
+            }
+        }
+        return $count;
+    }
 }

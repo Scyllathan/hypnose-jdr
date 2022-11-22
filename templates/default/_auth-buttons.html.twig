@@ -10,9 +10,11 @@
                     </svg>
                 </span>
             </a>
+            {% if app.user.unreadMessages != 0 %}
             <div class="circle d-flex justify-content-center rounded-circle shadow-sm">
-                <p>3</p>
+                <p>{{ app.user.unreadMessages }}</p>
             </div>
+            {% endif %}
         </div>
         <a href="{{ path('app_user') }}" role="button" class="btn-info btn ml-3">
             <span class="d-inline d-sm-none">
