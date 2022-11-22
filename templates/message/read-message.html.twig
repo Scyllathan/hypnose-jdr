@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ message.title }}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <a href="{{ path('app_messages_list') }}" role="button" class="btn btn-info mb-5">
+        << Retour à la liste de messages
+    </a>
+    <h1>{{ message.title }}</h1>
+    <p class="mb-5"><i>Envoyé par {{ message.sendBy.username }}</i></p>
+    <div class="container mx-0 my-4 py-2 bg-light rounded">
+        <p>{{ message.content|nl2br }}</p>
+    </div>
+    <div class="mt-5">
+        <a href="{{ path('app_response_message', { 'id': message.id }) }}" role="button" class="btn
+        btn-info">Répondre</a>
+        <a href="{{ path('app_delete_message', { 'id': message.id }) }}" role="button" class="btn btn-danger" onclick="return confirm('Êtes vous sûr de vouloir supprimer ' +
+         'ce message ?')">Supprimer</a>
+    </div>
+</div>
+{% endblock %}

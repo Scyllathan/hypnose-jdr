@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="mb-5">Mes messages</h1>
+    <a href="{{ path('app_new_message') }}" role="button" class="btn btn-info mb-4">Nouveau message</a>
+    <table class="table table-striped table-hover table-responsive-sm">
+        <thead>
+        <tr>
+            <th class="w-50">Sujet</th>
+            <th>De</th>
+            <th>Date</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if messages is empty %}
+            <tr>
+                <td colspan="5" class="text-center">
+                    <p>Aucun message pour le moment</p>
+                </td>
+            </tr>
+        {% else %}
+            {% for message in messages %}
+                <tr
+                    {% if message.isRead == false %}
+                        class="table-warning"
+                    {% endif %}
+                >
+                    <td>{{ message.title }}</td>
+                    <td>{{ message.sendBy.username }}</td>
+                    <td>{{ message.sendingDate|date('d/m/Y à H:i') }}</td>
+                    <td>
+                        <a href="{{ path('app_read_message', { 'id': message.id }) }}" role="button" class="btn
+                        btn-info">Lire</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_response_message', { 'id': message.id }) }}" role="button" class="btn btn-info">Répondre</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_delete_message', { 'id': message.id }) }}" role="button" class="btn btn-danger" onclick="return confirm('Êtes vous' +
+                         ' sûr de vouloir supprimer ce message ?')">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

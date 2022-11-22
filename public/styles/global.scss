@@ -26,8 +26,12 @@
   background: #2D988D !important;
 }
 
-.btn-info, .btn-info:hover, .btn-info:active, .btn-info:visited {
+.btn-info, .btn-info:active, .btn-info:visited {
   background-color: #2D988D !important;
+}
+
+.btn-info:hover {
+  background-color: #35a499 !important;
 }
 
 .text-info {

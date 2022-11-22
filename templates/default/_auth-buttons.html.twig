@@ -1,7 +1,7 @@
 {% if app.user %}
     <div class="mb-3 d-flex justify-content-lg-end justify-content-center">
         <div class="d-flex">
-            <a href="#" role="button" class="btn btn-info">
+            <a href="{{ path('app_messages_list') }}" role="button" class="btn btn-info">
                 <span class="d-none d-sm-inline">Messagerie</span>
                 <span class="d-inline d-sm-none">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
