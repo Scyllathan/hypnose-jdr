@@ -84,8 +84,16 @@ class MessageController extends AbstractController
             $entityManager->flush();
         }
 
+        if ($message->getReplyTo() !== null) {
+            $messagesHistory = $repository->findBy(array('replyTo' => strval($message->getReplyTo()->getId())), array
+            ( 'sendingDate' => 'DESC'));
+            $messagesHistory[] = $message->getReplyTo();
+        } else {
+            $messagesHistory = [$message];
+        }
+
         return $this->render('message/read-message.html.twig', [
-            'message' => $message
+            'message' => $message, 'messagesHistory' => $messagesHistory,
         ]);
     }
 
@@ -117,6 +125,14 @@ class MessageController extends AbstractController
         $form = $this->createForm(ResponseMessageType::class, $message);
         $form->handleRequest($request);
 
+        if ($responseTo->getReplyTo() !== null) {
+            $messagesHistory = $repository->findBy(array('replyTo' => strval($responseTo->getReplyTo()->getId())), array
+            ( 'sendingDate' => 'DESC'));
+            $messagesHistory[] = $responseTo->getReplyTo();
+        } else {
+            $messagesHistory = [$responseTo];
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->getUser() === $responseTo->getSendTo()) {
                 $dateTime = new \DateTime();
@@ -143,6 +159,8 @@ class MessageController extends AbstractController
         }
 
         return $this->render('message/response-message.html.twig', [
-            'responseForm' => $form->createView(), 'sender' => $responseTo->getSendBy()]);
+            'responseForm' => $form->createView(), 'sender' => $responseTo->getSendBy(), 'messagesHistory' =>
+                $messagesHistory, 'responseTo' => $responseTo,
+        ]);
     }
 }

@@ -18,5 +18,22 @@
         <a href="{{ path('app_delete_message', { 'id': message.id }) }}" role="button" class="btn btn-danger" onclick="return confirm('Êtes vous sûr de vouloir supprimer ' +
          'ce message ?')">Supprimer</a>
     </div>
+
+    <div class="mt-5">
+        <hr>
+        <h2 class="h5">Historique de la conversation</h2>
+        {% for messageHistory in messagesHistory %}
+            <div class="container mx-0 my-4 py-2
+            {% if messageHistory.id == message.id %}
+            bg-yellow
+            {% else %}
+            bg-light
+            {% endif %}
+             rounded">
+                <p><i>Envoyé par {{ messageHistory.sendBy.username }} le {{ messageHistory.sendingDate|date('d/m/Y à H:i') }}</i></p>
+                <p>{{ messageHistory.content|nl2br }}</p>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

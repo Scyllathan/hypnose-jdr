@@ -9,5 +9,22 @@
         {{ form_row(responseForm.content, { label: 'Contenu de la réponse' }) }}
         <button type="submit" class="btn btn-info">Envoyer</button>
         {{ form_end(responseForm) }}
+
+        <div class="mt-5">
+            <hr>
+            <h2 class="h5">Historique de la conversation</h2>
+            {% for messageHistory in messagesHistory %}
+                <div class="container mx-0 my-4 py-2
+            {% if messageHistory.id == responseTo.id %}
+            bg-yellow
+            {% else %}
+            bg-light
+            {% endif %}
+             rounded">
+                    <p><i>Envoyé par {{ messageHistory.sendBy.username }} le {{ messageHistory.sendingDate|date('d/m/Y à H:i') }}</i></p>
+                    <p>{{ messageHistory.content|nl2br }}</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
