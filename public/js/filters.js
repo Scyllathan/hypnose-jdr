@@ -56,3 +56,24 @@ function characterById() {
         }
     }
 }
+
+function characterByName() {
+    const data = httpRequest.response;
+    let dataReformat = JSON.parse(data.replace(/&quot;/ig,'"'));
+    let characters = dataReformat;
+    let characterList = document.getElementById('characterList');
+    characterList.innerHTML = '';
+
+    let nameFilter = document.getElementById('nameFilter').value.toString().toLowerCase();
+    let text = '';
+
+    for (let i = 0; i < characters.length; i++) {
+        text = (characters[i].firstName + ' ' + characters[i].lastName).toString().toLowerCase();
+
+        if (text.indexOf(nameFilter) > -1) {
+            let game = gameGenerator(characters[i]);
+            let url = detailUrlGenerator(characters[i]);
+            characterList.innerHTML += characterHtmlGenerator(characters[i], game, url);
+        }
+    }
+}

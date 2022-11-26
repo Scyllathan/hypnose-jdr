@@ -8,8 +8,7 @@ httpRequest.onreadystatechange = function() {
 
         for (let i = 0; i < characters.length; i++) {
             let game = gameGenerator(characters[i]);
-            let url = detailUrlGenerator(characters[i]);
-            characterList.innerHTML += characterHtmlGenerator(characters[i], game, url);
+            characterList.innerHTML += characterHtmlGenerator(characters[i], game);
         }
     }
 };
@@ -29,12 +28,7 @@ function gameGenerator(character) {
     return gameName
 }
 
-function detailUrlGenerator(character) {
-    let detailUrl = `/voir-personnage/${character.id}`;
-    return detailUrl;
-}
-
-function characterHtmlGenerator(character, gameName, url) {
+function characterHtmlGenerator(character, gameName) {
     let characterHtml = `<tr>
                     <td>${character.id}</td>
                     <td>${character.firstName} ${character.lastName}</td>
@@ -42,8 +36,12 @@ function characterHtmlGenerator(character, gameName, url) {
                         ${gameName}
                     </td>
                     <td>
-                        <a href="${url}" role="button" class="btn
+                        <a href="/joueur/voir-personnage/${character.id}" role="button" class="btn
                     btn-info">Détail</a>
+                    </td>
+                    <td>
+                        <a href="/joueur/contacter-personnage/${character.mp}" role="button" class="btn
+                    btn-info">Contacter</a>
                     </td>
                 </tr>`;
     return characterHtml;

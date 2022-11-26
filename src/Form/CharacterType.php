@@ -8,6 +8,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Nullable;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,6 +24,15 @@ class CharacterType extends AbstractType
             ->add('firstName', TextType::class)
             ->add('age', NumberType::class)
             ->add('disease', TextType::class)
+            ->add('introduction', ChoiceType::class, [
+                'choices'  => [
+                    'Hypnose' => 'Hypnose',
+                    'Rêve lucide' => 'Rêve lucide',
+                    'Coma' => 'Coma',
+                    'Drogue' => 'Drogue',
+                    'Transe' => 'Transe',
+                ],
+            ])
             ->add('story', TextareaType::class, [
                 'required' => false,
                 'attr' => [

@@ -93,6 +93,12 @@ class Character
     #[ORM\Column]
     private bool $isPublic = false;
 
+    #[ORM\Column(length: 255)]
+    private ?string $introduction = null;
+
+    #[ORM\Column]
+    private ?int $mp = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -322,6 +328,30 @@ class Character
     public function setIsPublic(bool $isPublic): self
     {
         $this->isPublic = $isPublic;
+
+        return $this;
+    }
+
+    public function getIntroduction(): ?string
+    {
+        return $this->introduction;
+    }
+
+    public function setIntroduction(string $introduction): self
+    {
+        $this->introduction = $introduction;
+
+        return $this;
+    }
+
+    public function getMp(): ?int
+    {
+        return $this->mp;
+    }
+
+    public function setMp(int $mp): self
+    {
+        $this->mp = $mp;
 
         return $this;
     }

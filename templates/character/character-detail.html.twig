@@ -8,6 +8,8 @@
             personnages</a>
         <h1 class="mb-5 text-center">{{ character.firstName | capitalize }} {{ character.lastName | upper
             }}</h1>
+        <a href="{{ path('app_contact_message', { 'id': character.user.id}) }}" role="button" class="btn
+        btn-info">Contacter le joueur</a>
         <div class="col col-md-6 p-0">
             <div class="container mx-0 my-4 py-2 bg-light rounded">
                 <p><b>Identifiant n° {{ character.id }}</b>
@@ -43,6 +45,7 @@
 
         <p class="my-4"><b>Age</b> : {{ character.age }}</p>
         <p class="my-4"><b>Maladie Mentale</b> : {{ character.disease | capitalize }}</p>
+        <p class="my-4"><b>Méthode d'introduction</b> : {{ character.introduction }}</p>
         <p class="my-4"><b>Histoire</b> :</p>
         <div class="container bg-light rounded mx-0 my-2 p-2">
             {% if character.story is null %}

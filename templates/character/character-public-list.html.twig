@@ -9,8 +9,12 @@
         <div class="filterElement bg-light rounded p-3 mb-4">
             <h2 class="h5 mb-3">Recherche de personnage</h2>
             <div class=" d-flex flex-column flex-md-row justify-content-between">
-                <input class="form-control w-auto" type="text" id="idFilter" onkeyup="characterById()"
-                       placeholder="Identifiant du personnage">
+                <div class="d-flex flex-column flex-md-row">
+                    <input class="form-control w-auto mr-md-2 mb-2" type="text" id="idFilter" onkeyup="characterById()"
+                           placeholder="Identifiant du personnage">
+                    <input class="form-control w-auto" type="text" id="nameFilter" onkeyup="characterByName()"
+                           placeholder="Nom du personnage">
+                </div>
                 <div class="mt-md-0 mt-2">
                     <button class="btn btn-info" type="button" id="withoutGameFilter" onclick="withoutGameCharacters()">
                         Sans Partie
@@ -28,6 +32,7 @@
                 <th>Id</th>
                 <th class="w-50">Nom</th>
                 <th class="w-50">Partie</th>
+                <th></th>
                 <th></th>
             </tr>
             </thead>

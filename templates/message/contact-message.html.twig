@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau message à {{ user.username }}{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="mb-5">Nouveau message à {{ user.username }}</h1>
+        {{ form_start(messageForm) }}
+        {{ form_row(messageForm.title, { label: 'Titre du message' }) }}
+        {{ form_row(messageForm.content, { label: 'Contenu du message' }) }}
+        <button type="submit" class="btn btn-info">Envoyer</button>
+        {{ form_widget(messageForm._token) }}
+        {{ form_end(messageForm, {'render_rest': false}) }}
+    </div>
+{% endblock %}

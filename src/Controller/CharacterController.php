@@ -41,6 +41,7 @@ class CharacterController extends AbstractController
             // Ajout de l'utilisateur au personnage et envoi en BDD
             $user = $this->getUser();
             $character->setUser($user);
+            $character->setMp($user->getId());
             $entityManager->persist($character);
             $entityManager->flush();
 

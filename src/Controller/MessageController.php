@@ -73,7 +73,10 @@ class MessageController extends AbstractController
         $repository = $entityManager->getRepository(Message::class);
         $message = $repository->find($id);
 
-        if ($message->getSendTo() !== $this->getUser()) {
+        if ($message === null) {
+            $this->addFlash('alert', 'Ce message n\'existe pas !');
+            return $this->redirectToRoute('app_messages_list');
+        } elseif ($message->getSendTo() !== $this->getUser()) {
             $this->addFlash('alert', 'On ne peux pas consulter les messages des autres !');
             return $this->redirectToRoute('app_messages_list');
         }
@@ -104,7 +107,10 @@ class MessageController extends AbstractController
         $repository = $entityManager->getRepository(Message::class);
         $message = $repository->find($id);
 
-        if ($message->getSendTo() !== $this->getUser()) {
+        if ($message === null) {
+            $this->addFlash('alert', 'Ce message n\'existe pas !');
+            return $this->redirectToRoute('app_messages_list');
+        } elseif ($message->getSendTo() !== $this->getUser()) {
             $this->addFlash('alert', 'On ne peux pas supprimer les messages des autres !');
         } else {
             $repository->remove($message, true);
@@ -124,6 +130,11 @@ class MessageController extends AbstractController
         $message = new Message();
         $form = $this->createForm(ResponseMessageType::class, $message);
         $form->handleRequest($request);
+
+        if ($responseTo === null) {
+            $this->addFlash('alert', 'On ne peut pas répondre à un message qui n\'existe pas !');
+            return $this->redirectToRoute('app_messages_list');
+        }
 
         if ($responseTo->getReplyTo() !== null) {
             $messagesHistory = $repository->findBy(array('replyTo' => strval($responseTo->getReplyTo()->getId())), array
@@ -162,5 +173,36 @@ class MessageController extends AbstractController
             'responseForm' => $form->createView(), 'sender' => $responseTo->getSendBy(), 'messagesHistory' =>
                 $messagesHistory, 'responseTo' => $responseTo,
         ]);
+    }
+
+    #[Route('/contacter-personnage/{id}', name: 'app_contact_message')]
+    public function contactMessage(int $id, Request $request): Response
+    {
+        $entityManager = $this->doctrine->getManager();
+        $repository = $entityManager->getRepository(User::class);
+        $userToContact = $repository->find($id);
+
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $dateTime = new \DateTime();
+
+            $message->setSendBy($user);
+            $message->setSendTo($userToContact);
+            $message->setSendingDate($dateTime);
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Message envoyé !');
+            return $this->redirectToRoute('app_messages_list');
+
+        }
+
+        return $this->render('message/contact-message.html.twig', [
+            'messageForm' => $form->createView(), 'user' => $userToContact,
+            ]);
     }
 }
