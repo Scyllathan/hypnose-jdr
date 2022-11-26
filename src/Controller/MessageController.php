@@ -182,6 +182,11 @@ class MessageController extends AbstractController
         $repository = $entityManager->getRepository(User::class);
         $userToContact = $repository->find($id);
 
+        if ($userToContact === null) {
+            $this->addFlash('alert', 'Cet utilisateur n\'existe pas');
+            return $this->redirectToRoute('app_messages_list');
+        }
+
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
