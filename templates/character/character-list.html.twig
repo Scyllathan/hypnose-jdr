@@ -44,5 +44,8 @@
         {% endfor %}
             </tbody>
         </table>
+        <nav class="d-flex justify-content-center mt-5">
+            {{ knp_pagination_render(characters) }}
+        </nav>
     </div>
 {% endblock %}

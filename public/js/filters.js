@@ -9,8 +9,7 @@ function withoutGameCharacters() {
         for (let i = 0; i < characters.length; i++) {
             if (characters[i].game === null) {
                 let game = gameGenerator(characters[i]);
-                let url = detailUrlGenerator(characters[i]);
-                characterList.innerHTML += characterHtmlGenerator(characters[i], game, url);
+                characterList.innerHTML += characterHtmlGenerator(characters[i], game);
             }
         }
     } else {
@@ -28,8 +27,7 @@ function allCharacters() {
 
         for (let i = 0; i < characters.length; i++) {
             let game = gameGenerator(characters[i]);
-            let url = detailUrlGenerator(characters[i]);
-            characterList.innerHTML += characterHtmlGenerator(characters[i], game, url);
+            characterList.innerHTML += characterHtmlGenerator(characters[i], game);
         }
     } else {
         // pas encore prête
@@ -51,8 +49,7 @@ function characterById() {
 
         if (text.indexOf(idFilter) > -1) {
             let game = gameGenerator(characters[i]);
-            let url = detailUrlGenerator(characters[i]);
-            characterList.innerHTML += characterHtmlGenerator(characters[i], game, url);
+            characterList.innerHTML += characterHtmlGenerator(characters[i], game);
         }
     }
 }
@@ -72,8 +69,7 @@ function characterByName() {
 
         if (text.indexOf(nameFilter) > -1) {
             let game = gameGenerator(characters[i]);
-            let url = detailUrlGenerator(characters[i]);
-            characterList.innerHTML += characterHtmlGenerator(characters[i], game, url);
+            characterList.innerHTML += characterHtmlGenerator(characters[i], game);
         }
     }
 }

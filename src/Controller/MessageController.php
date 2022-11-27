@@ -8,6 +8,7 @@ use App\Form\MessageType;
 use App\Form\ResponseMessageType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,14 +20,20 @@ class MessageController extends AbstractController
     public function __construct(private ManagerRegistry $doctrine) {}
 
     #[Route('/liste-messages', name: 'app_messages_list')]
-    public function messagesList(): Response
+    public function messagesList(Request $request, PaginatorInterface $paginator): Response
     {
         $entityManager = $this->doctrine->getManager();
         $repository = $entityManager->getRepository(Message::class);
         $messages = $repository->findBy(array('sendTo' => $this->getUser()->getId()), array('sendingDate' => 'DESC'));
 
+        $paginatedMessages = $paginator->paginate(
+            $messages, // Requête contenant les données à paginer
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            10 // Nombre de résultats par page
+        );
+
         return $this->render('message/messages-list.html.twig', [
-            'messages' => $messages
+            'messages' => $paginatedMessages
         ]);
     }
 

@@ -8,6 +8,7 @@ use App\Entity\Summary;
 use App\Form\GameType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,7 +72,7 @@ class GameController extends AbstractController
     }
 
     #[Route('/mj/mes-parties', name: 'app_game_list')]
-    public function showGames(): Response
+    public function showGames(Request $request, PaginatorInterface $paginator): Response
     {
         // Récupération en BDD de toutes les parties de l'utilisateur
         $entityManager = $this->doctrine->getManager();
@@ -79,7 +80,13 @@ class GameController extends AbstractController
         $userId = $this->getUser()->getId();
         $games = $repository->findBy(array('user' => $userId));
 
-        return $this->render('game/game-list.html.twig', [ 'games' => $games ]);
+        $paginatedGames = $paginator->paginate(
+            $games, // Requête contenant les données à paginer
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            10 // Nombre de résultats par page
+        );
+
+        return $this->render('game/game-list.html.twig', [ 'games' => $paginatedGames ]);
     }
 
     #[Route('/mj/supprimer-partie/{id}', name: 'app_delete_game')]
@@ -187,7 +194,7 @@ class GameController extends AbstractController
     }
 
     #[Route('joueur/voir-partie/{id}', name: 'app_game')]
-    public function gameDetail(int $id): Response
+    public function gameDetail(int $id, Request $request, PaginatorInterface $paginator): Response
     {
         // Récupération en BDD de la partie correspondant à l'id de l'url
         $entityManager = $this->doctrine->getManager();
@@ -213,7 +220,12 @@ class GameController extends AbstractController
         // Affichage de la page uniquement si la partie existe et que l'utilisateur en est le créateur ou qu'un de
         // ses personnages y participe.
         if ($game  && ($game->getUser()->getId() === $userId || in_array($id, $charactersGamesIds))) {
-            return $this->render('game/game-detail.html.twig', ['game' => $game, 'summaries' => $summaries ]);
+            $paginatedSummaries = $paginator->paginate(
+                $summaries, // Requête contenant les données à paginer
+                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+                10 // Nombre de résultats par page
+            );
+            return $this->render('game/game-detail.html.twig', ['game' => $game, 'summaries' => $paginatedSummaries ]);
         } else if ($game && $game->getUser()->getId() !== $userId) {
             $this->addFlash('alert', 'On ne peut pas voir les parties des autres !');
         } else {

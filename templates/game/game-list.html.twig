@@ -46,5 +46,8 @@
             {% endfor %}
             </tbody>
         </table>
+        <nav class="d-flex justify-content-center mt-5">
+            {{ knp_pagination_render(games) }}
+        </nav>
     </div>
 {% endblock %}

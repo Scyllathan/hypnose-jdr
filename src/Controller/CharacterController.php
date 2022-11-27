@@ -6,6 +6,7 @@ use App\Entity\Character;
 use App\Form\CharacterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,7 +55,7 @@ class CharacterController extends AbstractController
     }
 
     #[Route('/mes-personnages', name: 'app_character_list')]
-    public function characterList(): Response
+    public function characterList(Request $request, PaginatorInterface $paginator): Response
     {
         // Récupération des personnages de l'utilisateur pour affichage
         $entityManager = $this->doctrine->getManager();
@@ -62,7 +63,13 @@ class CharacterController extends AbstractController
         $userId = $this->getUser()->getId();
         $characters = $repository->findBy(array('user' => $userId));
 
-        return $this->render('character/character-list.html.twig', ['characters' => $characters]);
+        $paginatedCharacters = $paginator->paginate(
+            $characters, // Requête contenant les données à paginer
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            10 // Nombre de résultats par page
+        );
+
+        return $this->render('character/character-list.html.twig', ['characters' => $paginatedCharacters]);
     }
 
     #[Route('/personnages-publics', name: 'app_character_public_list')]
