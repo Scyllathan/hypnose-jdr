@@ -38,12 +38,18 @@ class UserController extends AbstractController
             if ($form->get('plainPassword')->getData() !== null && $form->get('confirmPlainPassword')->getData() !==
                 null) {
                 if ($form->get('plainPassword')->getData() === $form->get('confirmPlainPassword')->getData()) {
-                    $this->getUser()->setPassword(
-                        $userPasswordHasher->hashPassword(
-                            $user,
-                            $form->get('plainPassword')->getData()
-                        )
-                    );
+                    if (preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $form->get
+                    ('plainPassword')->getData())) {
+                        $this->getUser()->setPassword(
+                            $userPasswordHasher->hashPassword(
+                                $user,
+                                $form->get('plainPassword')->getData()
+                            )
+                        );
+                    } else {
+                        $this->addFlash('alert', 'Le nouveau mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial');
+                        return $this->redirectToRoute('app_modify_user');
+                    }
                 } else {
                     $this->addFlash('alert', 'Le nouveau mot de passe et sa confirmation doivent être identiques !');
                     return $this->redirectToRoute('app_modify_user');
