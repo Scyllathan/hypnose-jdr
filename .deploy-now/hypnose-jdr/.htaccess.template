@@ -23,3 +23,8 @@ RewriteRule (.*) /public/$1 [L]
 
 # route everything else to /public/index.php
 RewriteRule ^ /public/index.php [L]
+
+# Activez HTTPS
+RewriteEngine On
+RewriteCond %{Server_Port} !=443
+RewriteRule ^(.*)$ https://votre-domaine.fr/$1 [R=301,L]
